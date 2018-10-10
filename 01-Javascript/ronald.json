@@ -1,0 +1,10 @@
+{
+  "nombre": "Ronald",
+  "edad": 12,
+  "sueldo": 12.2,
+  "casado": false,
+  "hijos": null,
+  "mascotas":{
+    "nombre":"Cachetes"
+  }
+}
