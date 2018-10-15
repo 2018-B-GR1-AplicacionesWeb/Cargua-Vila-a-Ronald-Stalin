@@ -34,15 +34,64 @@ var ronald = {
 };//object
 console.log(ronald.nombre);//'Ronald'
 
-if (true){
-    console.log("Si");
-}else {
+if(true){
+    console.log("Si"); //
+} else{
     console.log("No");
 }
-//truty
-//falsy
-if (null){
+
+
+if(false){
     console.log("Si");
-}else{
-    console.log("No");//falsy
+} else{
+    console.log("No"); //
+}
+
+// truthy
+// falsy
+
+if(undefined){
+    console.log("Si");
+} else{
+    console.log("No"); // falsy
+}
+
+
+if(new Date()){
+    console.log("Si"); // truthy
+} else{
+    console.log("No");
+}
+
+
+if(null){
+    console.log("Si");
+} else{
+    console.log("No"); // falsy
+}
+
+
+if(0){
+    console.log("Si");
+} else{
+    console.log("No"); // falsy
+}
+
+if(-1){
+    console.log("Si"); // truthy
+} else{
+    console.log("No");
+}
+
+if(1){
+    console.log("Si"); //
+} else{
+    console.log("No");
+}
+
+
+if(""){
+    console.log("Si"); //
+} else{
+    console.log("No");
 }
