@@ -116,3 +116,10 @@ const resultadoReduce2 = arregloNumeros.reduceRight((a, b,indice)=>{
     }
 });
 console.log(resultadoReduce2);
+const cloneArregloNumeros = JSON.parse(JSON.stringify(arregloNumeros));
+console.log(cloneArregloNumeros);
+
+const  resultadoSort = arregloNumeros.sort((a,b)=>a-b);
+console.log(resultadoSort);
+const  resultadoSort2 = cloneArregloNumeros .sort((a,b)=>b-a);
+console.log(resultadoSort2);
