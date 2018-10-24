@@ -73,3 +73,4 @@ function primeraLetraEnMayuscula(texto) {
     return primeraLetraMayuscula + restoPalabra;
 }
 console.log(saludarEnUpperCase("ronald",primeraLetraEnMayuscula));
+
