@@ -76,8 +76,8 @@ const promesaAppFile=(nombreArchivo, contenidoArchivo)=>{
         }
     )
 };
-console.log(promesaAppFile);
-promesaAppFile().then(
+console.log(promesaAppFile('08-text.txt','hola'));
+promesaAppFile('08-text.txt','hola').then(
         (contenidoArchivo)=>{
             console.log('Todo bien',contenidoArchivo);
             return nuevaPromesaEscritura(contenidoArchivo)
