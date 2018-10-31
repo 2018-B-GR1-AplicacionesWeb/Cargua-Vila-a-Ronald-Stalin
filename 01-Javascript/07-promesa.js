@@ -43,7 +43,6 @@ nuevaPromesaDeLectura
         console.log('Algo malo paso',resultadoError);
     }
     );
-
 const promesaAppFile=(nombreArchivo, contenidoArchivo)=>{
     return new Promise(
         (resolve, reject)=>{
@@ -82,7 +81,6 @@ promesaAppFile('08-text.txt','hola').then(
             console.log('Todo bien',contenidoArchivo);
             return nuevaPromesaEscritura(contenidoArchivo)
         }
-
 ).catch(
     (resultadoError)=>{
         console.log('Algo malo paso',resultadoError);
@@ -116,12 +114,10 @@ const promesaForeach = (arregloString)=>{
                     }
                 );
     });
-
-
 };
-
 const arregloString=['A','B','C'];
 console.log(promesaForeach(arregloString));
 promesaForeach(arregloString).then((contenidArreglo)=>{
         console.log(contenidArreglo);
     });
+
