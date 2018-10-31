@@ -1,6 +1,5 @@
 // npm i -g typescript
 //tsc 01-Variables.ts --target es2017
-
 const nombre : string = " ";
 const edad : number = 23;
 const nada : string = null;
@@ -49,15 +48,17 @@ function sumarDosNumeros(numeroUno : number, numeroDos : number) {
 
 sumarDosNumeros(2,2);
 
-const  saludar = (nombre:string,
-                  apellido?:string,
-                  ...infinito:number[]):any =>{
-                  return 2;
+const  saludar = (nombre:string, apellido?:string, ...infinito:number[]):any =>{
+    return 3;
 };
 
-let respuesta = <string> saludar('Ronald',
-    'Cargua',
-    1,2,3,4);
-    respuesta = respuesta.toUpperCase();
+let respuesta = <string> saludar('ronald','cargua',1,2,3,4);
+respuesta = respuesta.toUpperCase();
 
-let nombreDos = 'Ronald';
+//otra forma de castear
+/*let respuesta:string  =  saludar('ronald','cargua',1,2,3,4);
+respuesta = respuesta.toUpperCase();*/
+
+
+let  nombreDos = 'Ronald';
+nombreDos = 'hola'; //duck typing : Trata de interpretar lo que es el tipo de variable
