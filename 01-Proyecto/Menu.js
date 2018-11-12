@@ -1,20 +1,20 @@
-const inquirer = require('inquirer');
-const fs = require('fs');
-const rxjs = require('rxjs');
-const map = require('rxjs/operators').map;
-const usuarios = (usua) => {
-    return new Promise((resolve, reject) => {
-        fs.readFile('Login.txt', 'utf-8', (err, contenido) => {
+var inquirer = require('inquirer');
+var fs = require('fs');
+var rxjs = require('rxjs');
+var map = require('rxjs/operators').map;
+var usuarios = function (usua) {
+    return new Promise(function (resolve, reject) {
+        fs.readFile('Login.txt', 'utf-8', function (err, contenido) {
             if (err) {
                 reject(err);
             }
             else {
-                const arregloUsuarios = contenido.split(/\r?\n/).map((linea) => {
+                var arregloUsuarios = contenido.split(/\r?\n/).map(function (linea) {
                     var users = linea.split(' ');
                     return { user: users[0], pass: users[1] };
                 });
                 arregloUsuarios
-                    .forEach((element) => {
+                    .forEach(function (element) {
                     if (usua === element.user) {
                         resolve(element.pass);
                     }
@@ -24,28 +24,28 @@ const usuarios = (usua) => {
     });
 };
 //usuarios('ronald').then((contenido)=>{console.log(contenido)}).catch((err)=>{console.log(err)});
-const queEs = {
+var queEs = {
     name: 'queEsUsted',
     type: 'list',
     message: '¿Qué es usted?',
     choices: ['Comprador', 'Vendedor'],
     default: 1,
 };
-const menuVendedor = {
+var menuVendedor = {
     name: 'menuVendedor',
     type: 'list',
     message: 'Escoja una opción:',
     choices: ['Ingresar más productos', 'Editar productos', 'Ingresar Usuarios', 'Regresar'],
     default: 3,
 };
-const menuComprador = {
+var menuComprador = {
     name: 'menuComprador',
     type: 'list',
     message: 'Escoja una opción:',
     choices: ['Escojer producto a comprar', 'Enlistar los productos seleccionados', 'Regresar'],
     default: 2,
 };
-const login = [{
+var login = [{
         name: 'user',
         type: 'input',
         message: 'Ingrese su usuario: '
@@ -56,7 +56,7 @@ const login = [{
         mask: '*'
     }];
 function regresar() {
-    inquirer.prompt(queEs).then((answer) => {
+    inquirer.prompt(queEs).then(function (answer) {
         if (answer.queEsUsted === 'Vendedor') {
             subMenuVendedor();
         }
@@ -66,10 +66,10 @@ function regresar() {
     });
 }
 function logi() {
-    inquirer.prompt(login).then((ans) => {
-        usuarios(ans.user).then((user) => {
+    inquirer.prompt(login).then(function (ans) {
+        usuarios(ans.user).then(function (user) {
             if (user === ans.pass) {
-                inquirer.prompt([menuVendedor]).then((menu) => {
+                inquirer.prompt([menuVendedor]).then(function (menu) {
                     if (menu.menuVendedor === 'Regresar') {
                         regresar();
                     }
@@ -79,7 +79,7 @@ function logi() {
                 console.log('Usuario o contraseña incorrecta');
                 logi();
             }
-        }).catch((error) => {
+        }).catch(function (error) {
             console.log(error);
         });
     });
@@ -88,7 +88,7 @@ function subMenuVendedor() {
     logi();
 }
 function subMenuComprador() {
-    inquirer.prompt([menuComprador]).then((ans) => {
+    inquirer.prompt([menuComprador]).then(function (ans) {
         if (ans.menuComprador === 'Regresar') {
             regresar();
         }

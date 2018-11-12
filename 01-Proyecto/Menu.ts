@@ -1,5 +1,5 @@
 declare var require;
-oonst inquirer = require('inquirer');
+const inquirer = require('inquirer');
 const fs = require('fs');
 const rxjs = require('rxjs');
 const map = require('rxjs/operators').map;
