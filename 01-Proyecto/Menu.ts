@@ -15,15 +15,12 @@ const usuarios =(usua)=>{
                         var users =linea.split(' ');
                         return {user : users[0], pass : users[1]};
                     });
-                    const contraseña = arregloUsuarios
+                    arregloUsuarios
                         .forEach((element)=>{
                             if (usua === element.user){
                                 resolve(element.pass)
-                            }else{
-                                reject()
                             }
                         });
-                    resolve(contraseña)
                 }
             });
         }
@@ -44,7 +41,7 @@ const menuVendedor ={
     default: 3,
 };
 const menuComprador ={
-    name: 'menuVendedor',
+    name: 'menuComprador',
     type:'list',
     message:'Escoja una opción:',
     choices:['Escojer producto a comprar','Enlistar los productos seleccionados','Regresar'],
@@ -60,20 +57,52 @@ const login =[{
     message:'Ingrese su contraseña: ',
     mask:'*'
 }];
+function regresar() {
+    inquirer.prompt(queEs).then((answer)=>{
+        if (answer.queEsUsted==='Vendedor'){
+            subMenuVendedor();
+        }
+        else{
+            subMenuComprador();
+        }
+    })
+}
+function logi() {
+    inquirer.prompt(login).then((ans)=>{
+        usuarios(ans.user).then((user)=>{
+            if (user === ans.pass){
+                inquirer.prompt([menuVendedor]).then((menu)=>{
+                    if (menu.menuVendedor === 'Regresar'){
+                        regresar();
+                    }
+                })
+            }else{
+                console.log('Usuario o contraseña incorrecta');
+                logi();
+            }
+        }).catch((error)=>{
+            console.log(error)
+        })
+    })
+}
+function subMenuVendedor(){
+    logi();
+}
+function subMenuComprador(){
+    inquirer.prompt([menuComprador]).then((ans)=>{
+        if(ans.menuComprador==='Regresar'){
+            regresar();
+        }
+    })
+}
+
+regresar();
+/*
 inquirer.prompt([queEs]).then((answer)=>{
     if (answer.queEsUsted==='Vendedor'){
-
-        inquirer.prompt(login).then((ans)=>{
-            usuarios(ans.user).then((user)=>{
-                if (ans.pass=== user){
-                    inquirer.prompt([menuVendedor])
-                }else{
-                    console.log('Usuario o contraseña incorrecta')
-                }
-            })
-        })
-
-    }else{
+        subMenuVendedor();
+    }
+    else{
         inquirer.prompt([menuComprador]).then((ans=> {
             if (ans.menuVendedor === 'Regresar') {
                 inquirer.prompt([queEs])
@@ -81,4 +110,4 @@ inquirer.prompt([queEs]).then((answer)=>{
         }));
     }
 });
-
+*/

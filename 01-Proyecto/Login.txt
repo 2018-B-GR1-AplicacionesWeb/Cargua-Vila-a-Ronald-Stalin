@@ -1,2 +1,4 @@
-ronald 1234
-juan 4321
+juan 1234
+ronald 4321
+pedro 1345
+stalin 2121
