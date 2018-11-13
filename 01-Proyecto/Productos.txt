@@ -1,4 +1,4 @@
 arroz granos 1.0 2.00
 frejol granos 1.0 2.00
-atun enlatados 1.0 2.00
+atun enlatados 1.0 3.00
 pollo carnes 1.0 2.00

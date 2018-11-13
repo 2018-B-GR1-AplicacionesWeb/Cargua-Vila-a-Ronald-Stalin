@@ -19,7 +19,36 @@ function arregloProductos(arreglo){
     })
     return arr;
 }
-
+const productosABuscar= (producto)=>{
+    return new Promise((resolve, reject) => {
+        fs.readFile('Productos.txt','utf-8',(err,contenido)=>{
+            if (err){
+                reject(err)
+            }else {
+                const arregloUsuarios=contenido.split(/\r?\n/).map((linea)=>{
+                    var users =linea.split(' ');
+                    return {nombre : users[0], categoria : users[1], unidades:users[2],precio:users[3]};
+                });
+                arregloUsuarios
+                    .forEach((element)=>{
+                        if (producto === element.nombre){
+                            resolve(element.precio)
+                        }
+                    });
+            }
+        });
+    })
+};
+function buscarProducto(arreglo) {
+    console.log('\n***Productos a comprar: ***');
+    console.log('   Producto\t\tPrecio');
+    arreglo.forEach((elemnet, indice)=>{
+        productosABuscar(elemnet.productos).then((respuesta)=>{
+                indice= indice +1;
+                console.log(`${indice} ${elemnet.productos}\t\t${respuesta}`)
+        });
+    });
+}
 const productos = ()=>{
     return new Promise((resolve, reject) => {
         fs.readFile('Productos.txt','utf-8',(err,contenido)=>{
@@ -35,7 +64,6 @@ const productos = ()=>{
         });
     })
 };
-
 const usuarios =(usua)=>{
     return new Promise(
         (resolve,reject) => {
@@ -58,7 +86,6 @@ const usuarios =(usua)=>{
         }
     )};
 //usuarios('ronald').then((contenido)=>{console.log(contenido)}).catch((err)=>{console.log(err)});
-
 const queEs ={
     name:'queEsUsted',
     type:'list',
@@ -100,10 +127,11 @@ function menuProductos(producto) {
         produtosSeleccionados.push(res);
         inquirer.prompt([confirmarMasProductos]).then((resul)=>{
             if (resul.confirm === true){
+                console.log(produtosSeleccionados)
                 menuProductos(producto);
             }
             else{
-                console.log(':D')
+                subMenuComprador();
             }
         })
     })
@@ -140,7 +168,6 @@ function subMenuVendedor(){
     logi();
 }
 function subMenuComprador(){
-
     inquirer.prompt([menuComprador]).then((ans)=>{
         if(ans.menuComprador==='Regresar'){
             regresar();
@@ -156,6 +183,9 @@ function subMenuComprador(){
                 }
                 menuProductos(producto);
             });
+        }
+        else if (ans.menuComprador==='Enlistar los productos seleccionados'){
+            buscarProducto(produtosSeleccionados)
         }
     })
 }
