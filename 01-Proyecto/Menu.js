@@ -1,20 +1,44 @@
-var inquirer = require('inquirer');
-var fs = require('fs');
-var rxjs = require('rxjs');
-var map = require('rxjs/operators').map;
-var usuarios = function (usua) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile('Login.txt', 'utf-8', function (err, contenido) {
+const inquirer = require('inquirer');
+const fs = require('fs');
+const rxjs = require('rxjs');
+const map = require('rxjs/operators').map;
+function enlistarProductos(arreglo) {
+    console.log('\n***Productos a comprar: ***');
+    console.log('   Producto\t\tPrecio');
+    arreglo.forEach((elemnto, indice) => {
+        indice = indice + 1;
+        console.log(`${indice} ${elemnto.nombre}\t\t${elemnto.precio}`);
+    });
+}
+const productos = () => {
+    return new Promise((resolve, reject) => {
+        fs.readFile('Productos.txt', 'utf-8', (err, contenido) => {
             if (err) {
                 reject(err);
             }
             else {
-                var arregloUsuarios = contenido.split(/\r?\n/).map(function (linea) {
+                const arregloUsuarios = contenido.split(/\r?\n/).map((linea) => {
+                    var users = linea.split(' ');
+                    return { nombre: users[0], categoria: users[1], unidades: users[2], precio: users[3] };
+                });
+                resolve(arregloUsuarios);
+            }
+        });
+    });
+};
+const usuarios = (usua) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile('Login.txt', 'utf-8', (err, contenido) => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                const arregloUsuarios = contenido.split(/\r?\n/).map((linea) => {
                     var users = linea.split(' ');
                     return { user: users[0], pass: users[1] };
                 });
                 arregloUsuarios
-                    .forEach(function (element) {
+                    .forEach((element) => {
                     if (usua === element.user) {
                         resolve(element.pass);
                     }
@@ -24,28 +48,28 @@ var usuarios = function (usua) {
     });
 };
 //usuarios('ronald').then((contenido)=>{console.log(contenido)}).catch((err)=>{console.log(err)});
-var queEs = {
+const queEs = {
     name: 'queEsUsted',
     type: 'list',
     message: '¿Qué es usted?',
     choices: ['Comprador', 'Vendedor'],
     default: 1,
 };
-var menuVendedor = {
+const menuVendedor = {
     name: 'menuVendedor',
     type: 'list',
     message: 'Escoja una opción:',
     choices: ['Ingresar más productos', 'Editar productos', 'Ingresar Usuarios', 'Regresar'],
     default: 3,
 };
-var menuComprador = {
+const menuComprador = {
     name: 'menuComprador',
     type: 'list',
     message: 'Escoja una opción:',
     choices: ['Escojer producto a comprar', 'Enlistar los productos seleccionados', 'Regresar'],
     default: 2,
 };
-var login = [{
+const login = [{
         name: 'user',
         type: 'input',
         message: 'Ingrese su usuario: '
@@ -56,7 +80,7 @@ var login = [{
         mask: '*'
     }];
 function regresar() {
-    inquirer.prompt(queEs).then(function (answer) {
+    inquirer.prompt(queEs).then((answer) => {
         if (answer.queEsUsted === 'Vendedor') {
             subMenuVendedor();
         }
@@ -66,10 +90,10 @@ function regresar() {
     });
 }
 function logi() {
-    inquirer.prompt(login).then(function (ans) {
-        usuarios(ans.user).then(function (user) {
+    inquirer.prompt(login).then((ans) => {
+        usuarios(ans.user).then((user) => {
             if (user === ans.pass) {
-                inquirer.prompt([menuVendedor]).then(function (menu) {
+                inquirer.prompt([menuVendedor]).then((menu) => {
                     if (menu.menuVendedor === 'Regresar') {
                         regresar();
                     }
@@ -79,7 +103,7 @@ function logi() {
                 console.log('Usuario o contraseña incorrecta');
                 logi();
             }
-        }).catch(function (error) {
+        }).catch((error) => {
             console.log(error);
         });
     });
@@ -88,24 +112,15 @@ function subMenuVendedor() {
     logi();
 }
 function subMenuComprador() {
-    inquirer.prompt([menuComprador]).then(function (ans) {
+    inquirer.prompt([menuComprador]).then((ans) => {
         if (ans.menuComprador === 'Regresar') {
             regresar();
+        }
+        else if (ans.menuComprador === 'Enlistar los productos seleccionados') {
+            productos().then(resultado => {
+                enlistarProductos(resultado);
+            });
         }
     });
 }
 regresar();
-/*
-inquirer.prompt([queEs]).then((answer)=>{
-    if (answer.queEsUsted==='Vendedor'){
-        subMenuVendedor();
-    }
-    else{
-        inquirer.prompt([menuComprador]).then((ans=> {
-            if (ans.menuVendedor === 'Regresar') {
-                inquirer.prompt([queEs])
-            }
-        }));
-    }
-});
-*/

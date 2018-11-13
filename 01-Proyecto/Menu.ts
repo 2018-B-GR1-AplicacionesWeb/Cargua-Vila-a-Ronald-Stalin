@@ -4,6 +4,29 @@ const fs = require('fs');
 const rxjs = require('rxjs');
 const map = require('rxjs/operators').map;
 
+function enlistarProductos(arreglo){
+    console.log('\n***Productos a comprar: ***');
+    console.log('   Producto\t\tPrecio');
+    arreglo.forEach((elemnto, indice)=>{
+        indice= indice +1
+        console.log(`${indice} ${elemnto.nombre}\t\t${elemnto.precio}`)
+    })
+}
+const productos = ()=>{
+    return new Promise((resolve, reject) => {
+        fs.readFile('Productos.txt','utf-8',(err,contenido)=>{
+            if (err){
+                reject(err)
+            }else {
+                const arregloUsuarios=contenido.split(/\r?\n/).map((linea)=>{
+                    var users =linea.split(' ');
+                    return {nombre : users[0], categoria : users[1], unidades:users[2],precio:users[3]};
+                });
+                resolve(arregloUsuarios)
+            }
+        });
+    })
+};
 const usuarios =(usua)=>{
     return new Promise(
         (resolve,reject) => {
@@ -93,21 +116,11 @@ function subMenuComprador(){
         if(ans.menuComprador==='Regresar'){
             regresar();
         }
+        else if (ans.menuComprador === 'Enlistar los productos seleccionados'){
+            productos().then(resultado=>{
+                enlistarProductos(resultado)
+            });
+        }
     })
 }
-
 regresar();
-/*
-inquirer.prompt([queEs]).then((answer)=>{
-    if (answer.queEsUsted==='Vendedor'){
-        subMenuVendedor();
-    }
-    else{
-        inquirer.prompt([menuComprador]).then((ans=> {
-            if (ans.menuVendedor === 'Regresar') {
-                inquirer.prompt([queEs])
-            }
-        }));
-    }
-});
-*/
