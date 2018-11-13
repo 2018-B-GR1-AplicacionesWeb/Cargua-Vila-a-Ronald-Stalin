@@ -3,7 +3,7 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const rxjs = require('rxjs');
 const map = require('rxjs/operators').map;
-
+const produtosSeleccionados =[];
 function enlistarProductos(arreglo){
     console.log('\n***Productos a comprar: ***');
     console.log('   Producto\t\tPrecio');
@@ -12,6 +12,14 @@ function enlistarProductos(arreglo){
         console.log(`${indice} ${elemnto.nombre}\t\t${elemnto.precio}`)
     })
 }
+function arregloProductos(arreglo){
+    const arr =[];
+    arreglo.forEach((elemnto)=>{
+        arr.push(elemnto.nombre)
+    })
+    return arr;
+}
+
 const productos = ()=>{
     return new Promise((resolve, reject) => {
         fs.readFile('Productos.txt','utf-8',(err,contenido)=>{
@@ -27,6 +35,7 @@ const productos = ()=>{
         });
     })
 };
+
 const usuarios =(usua)=>{
     return new Promise(
         (resolve,reject) => {
@@ -49,6 +58,7 @@ const usuarios =(usua)=>{
         }
     )};
 //usuarios('ronald').then((contenido)=>{console.log(contenido)}).catch((err)=>{console.log(err)});
+
 const queEs ={
     name:'queEsUsted',
     type:'list',
@@ -80,6 +90,24 @@ const login =[{
     message:'Ingrese su contraseña: ',
     mask:'*'
 }];
+const confirmarMasProductos = {
+    name:'confirm',
+    type:'confirm',
+    message:'Desea comprar mas productos',
+}
+function menuProductos(producto) {
+    inquirer.prompt([producto]).then((res)=>{
+        produtosSeleccionados.push(res);
+        inquirer.prompt([confirmarMasProductos]).then((resul)=>{
+            if (resul.confirm === true){
+                menuProductos(producto);
+            }
+            else{
+                console.log(':D')
+            }
+        })
+    })
+}
 function regresar() {
     inquirer.prompt(queEs).then((answer)=>{
         if (answer.queEsUsted==='Vendedor'){
@@ -112,13 +140,21 @@ function subMenuVendedor(){
     logi();
 }
 function subMenuComprador(){
+
     inquirer.prompt([menuComprador]).then((ans)=>{
         if(ans.menuComprador==='Regresar'){
             regresar();
         }
-        else if (ans.menuComprador === 'Enlistar los productos seleccionados'){
-            productos().then(resultado=>{
-                enlistarProductos(resultado)
+        else if (ans.menuComprador === 'Escojer producto a comprar'){
+            productos().then((resultado)=>{
+                const producto = {
+                    name:'productos',
+                    type:'list',
+                    message:'Escoja un producto',
+                    choices:arregloProductos(resultado),
+                    default:1,
+                }
+                menuProductos(producto);
             });
         }
     })
