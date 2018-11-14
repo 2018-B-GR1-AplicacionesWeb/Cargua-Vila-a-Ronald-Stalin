@@ -1,37 +1,37 @@
-var inquirer = require('inquirer');
-var fs = require('fs');
-var rxjs = require('rxjs');
-var map = require('rxjs/operators').map;
-var produtosSeleccionados = [];
-var total = 0;
+const inquirer = require('inquirer');
+const fs = require('fs');
+const rxjs = require('rxjs');
+const map = require('rxjs/operators').map;
+const produtosSeleccionados = [];
+let total = 0;
 function enlistarProductos(arreglo) {
     console.log('\n***Productos a comprar: ***');
     console.log('   Producto\t\tPrecio');
-    arreglo.forEach(function (elemnto, indice) {
+    arreglo.forEach((elemnto, indice) => {
         indice = indice + 1;
-        console.log(indice + " " + elemnto.nombre + "\t\t" + elemnto.precio);
+        console.log(`${indice} ${elemnto.nombre}\t\t${elemnto.precio}`);
     });
 }
 function arregloProductos(arreglo) {
-    var arr = [];
-    arreglo.forEach(function (elemnto) {
+    const arr = [];
+    arreglo.forEach((elemnto) => {
         arr.push(elemnto.nombre);
     });
     return arr;
 }
-var productosABuscar = function (producto) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile('Productos.txt', 'utf-8', function (err, contenido) {
+const productosABuscar = (producto) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile('Productos.txt', 'utf-8', (err, contenido) => {
             if (err) {
                 reject(err);
             }
             else {
-                var arregloUsuarios = contenido.split(/\r?\n/).map(function (linea) {
+                const arregloUsuarios = contenido.split(/\r?\n/).map((linea) => {
                     var users = linea.split(' ');
                     return { nombre: users[0], categoria: users[1], precio: users[2] };
                 });
                 arregloUsuarios
-                    .forEach(function (element) {
+                    .forEach((element) => {
                     if (producto === element.nombre) {
                         resolve(element.precio);
                     }
@@ -40,12 +40,12 @@ var productosABuscar = function (producto) {
         });
     });
 };
-var promesaBuscar = function (arreglo) {
-    return new Promise(function (resolve) {
-        arreglo.forEach(function (elemnet) {
-            productosABuscar(elemnet.productos).then(function (respuesta) {
+const promesaBuscar = (arreglo) => {
+    return new Promise((resolve) => {
+        arreglo.forEach((elemnet) => {
+            productosABuscar(elemnet.productos).then((respuesta) => {
                 total = total + parseFloat(respuesta.toString());
-                console.log("\t " + elemnet.productos + "\t\t" + respuesta + "\t\t" + total);
+                console.log(`\t ${elemnet.productos}\t\t${respuesta}\t\t${total}`);
             });
         });
     });
@@ -53,18 +53,18 @@ var promesaBuscar = function (arreglo) {
 function buscarProducto(arreglo) {
     console.log('\n***Productos a comprar: ***');
     console.log('   Producto\t\tPrecio\t\tTotal');
-    promesaBuscar(arreglo).then(function (reg) {
+    promesaBuscar(arreglo).then((reg) => {
         console.log(reg);
     });
 }
-var productos = function () {
-    return new Promise(function (resolve, reject) {
-        fs.readFile('Productos.txt', 'utf-8', function (err, contenido) {
+const productos = () => {
+    return new Promise((resolve, reject) => {
+        fs.readFile('Productos.txt', 'utf-8', (err, contenido) => {
             if (err) {
                 reject(err);
             }
             else {
-                var arregloUsuarios = contenido.split(/\r?\n/).map(function (linea) {
+                const arregloUsuarios = contenido.split(/\r?\n/).map((linea) => {
                     var users = linea.split(' ');
                     return { nombre: users[0], categoria: users[1], precio: users[2] };
                 });
@@ -73,11 +73,11 @@ var productos = function () {
         });
     });
 };
-var ingresarUsuarios = function (nombreArchivo, contenidoArchivo) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile(nombreArchivo, 'utf-8', function (error, contenidoArchivoLeido) {
+const ingresarUsuarios = (nombreArchivo, contenidoArchivo) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile(nombreArchivo, 'utf-8', (error, contenidoArchivoLeido) => {
             if (error) {
-                fs.writeFile(nombreArchivo, contenidoArchivo, function (err) {
+                fs.writeFile(nombreArchivo, contenidoArchivo, (err) => {
                     if (err) {
                         reject(err);
                     }
@@ -87,7 +87,7 @@ var ingresarUsuarios = function (nombreArchivo, contenidoArchivo) {
                 });
             }
             else {
-                fs.writeFile(nombreArchivo, contenidoArchivoLeido + '\n' + contenidoArchivo, function (err) {
+                fs.writeFile(nombreArchivo, contenidoArchivoLeido + '\n' + contenidoArchivo, (err) => {
                     if (err) {
                         reject(err);
                     }
@@ -99,19 +99,19 @@ var ingresarUsuarios = function (nombreArchivo, contenidoArchivo) {
         });
     });
 };
-var usuarios = function (usua) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile('Login.txt', 'utf-8', function (err, contenido) {
+const usuarios = (usua) => {
+    return new Promise((resolve, reject) => {
+        fs.readFile('Login.txt', 'utf-8', (err, contenido) => {
             if (err) {
                 reject(err);
             }
             else {
-                var arregloUsuarios = contenido.split(/\r?\n/).map(function (linea) {
+                const arregloUsuarios = contenido.split(/\r?\n/).map((linea) => {
                     var users = linea.split(' ');
                     return { user: users[0], pass: users[1] };
                 });
                 arregloUsuarios
-                    .forEach(function (element) {
+                    .forEach((element) => {
                     if (usua === element.user) {
                         resolve(element.pass);
                     }
@@ -121,21 +121,21 @@ var usuarios = function (usua) {
     });
 };
 //usuarios('ronald').then((contenido)=>{console.log(contenido)}).catch((err)=>{console.log(err)});
-var queEs = {
+const queEs = {
     name: 'queEsUsted',
     type: 'list',
     message: '¿Qué es usted?',
     choices: ['Comprador', 'Vendedor'],
     default: 1,
 };
-var menuVendedor = {
+const menuVendedor = {
     name: 'menuVendedor',
     type: 'list',
     message: 'Escoja una opción:',
-    choices: ['Ingresar más productos', 'Editar productos', 'Ingresar Usuarios', 'Regresar'],
-    default: 3,
+    choices: ['Ingresar más productos', 'Ingresar Usuarios', 'Regresar'],
+    default: 2,
 };
-var ingresarUser = [{
+const ingresarUser = [{
         name: 'login',
         type: 'input',
         message: 'Ingrese un usuario'
@@ -145,14 +145,14 @@ var ingresarUser = [{
         message: 'Ingrese un contraseña',
         mask: '*'
     }];
-var menuComprador = {
+const menuComprador = {
     name: 'menuComprador',
     type: 'list',
     message: 'Escoja una opción:',
     choices: ['Escojer producto a comprar', 'Productos a comprar', 'Regresar'],
     default: 2,
 };
-var login = [{
+const login = [{
         name: 'user',
         type: 'input',
         message: 'Ingrese su usuario: '
@@ -162,12 +162,12 @@ var login = [{
         message: 'Ingrese su contraseña: ',
         mask: '*'
     }];
-var confirmarMasProductos = {
+const confirmarMasProductos = {
     name: 'confirm',
     type: 'confirm',
     message: 'Desea comprar mas productos',
 };
-var ingresarProductos = [{
+const ingresarProductos = [{
         name: 'nombre',
         type: 'input',
         message: 'Ingrese el nombre del producto: '
@@ -181,9 +181,9 @@ var ingresarProductos = [{
         message: 'Ingrese el precio del producto: '
     }];
 function menuProductos(producto) {
-    inquirer.prompt([producto]).then(function (res) {
+    inquirer.prompt([producto]).then((res) => {
         produtosSeleccionados.push(res);
-        inquirer.prompt([confirmarMasProductos]).then(function (resul) {
+        inquirer.prompt([confirmarMasProductos]).then((resul) => {
             if (resul.confirm === true) {
                 menuProductos(producto);
             }
@@ -194,7 +194,7 @@ function menuProductos(producto) {
     });
 }
 function regresar() {
-    inquirer.prompt(queEs).then(function (answer) {
+    inquirer.prompt(queEs).then((answer) => {
         if (answer.queEsUsted === 'Vendedor') {
             subMenuVendedor();
         }
@@ -204,26 +204,26 @@ function regresar() {
     });
 }
 function logi() {
-    inquirer.prompt(login).then(function (ans) {
-        usuarios(ans.user).then(function (user) {
+    inquirer.prompt(login).then((ans) => {
+        usuarios(ans.user).then((user) => {
             if (user === ans.pass) {
-                inquirer.prompt([menuVendedor]).then(function (menu) {
+                inquirer.prompt([menuVendedor]).then((menu) => {
                     if (menu.menuVendedor === 'Regresar') {
                         regresar();
                     }
                     else if (menu.menuVendedor === 'Ingresar Usuarios') {
-                        inquirer.prompt(ingresarUser).then(function (answ) {
-                            var login = answ.login + ' ' + answ.password;
-                            ingresarUsuarios('Login.txt', login).then(function (res) {
+                        inquirer.prompt(ingresarUser).then(answ => {
+                            const login = answ.login + ' ' + answ.password;
+                            ingresarUsuarios('Login.txt', login).then(res => {
                                 console.log('\n' + res + '\n');
                             });
                             regresar();
                         });
                     }
                     else if (menu.menuVendedor === 'Ingresar más productos') {
-                        inquirer.prompt(ingresarProductos).then(function (answ) {
-                            var product = answ.nombre + ' ' + answ.categoria + ' ' + answ.precio;
-                            ingresarUsuarios('Productos.txt', product).then(function (res) {
+                        inquirer.prompt(ingresarProductos).then(answ => {
+                            const product = answ.nombre + ' ' + answ.categoria + ' ' + answ.precio;
+                            ingresarUsuarios('Productos.txt', product).then(res => {
                                 console.log('\n' + res + '\n');
                             });
                             regresar();
@@ -235,7 +235,7 @@ function logi() {
                 console.log('Usuario o contraseña incorrecta');
                 logi();
             }
-        }).catch(function (error) {
+        }).catch((error) => {
             console.log(error);
         });
     });
@@ -244,13 +244,13 @@ function subMenuVendedor() {
     logi();
 }
 function subMenuComprador() {
-    inquirer.prompt([menuComprador]).then(function (ans) {
+    inquirer.prompt([menuComprador]).then((ans) => {
         if (ans.menuComprador === 'Regresar') {
             regresar();
         }
         else if (ans.menuComprador === 'Escojer producto a comprar') {
-            productos().then(function (resultado) {
-                var producto = {
+            productos().then((resultado) => {
+                const producto = {
                     name: 'productos',
                     type: 'list',
                     message: 'Escoja un producto',

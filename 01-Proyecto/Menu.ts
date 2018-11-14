@@ -143,8 +143,8 @@ const menuVendedor = {
     name: 'menuVendedor',
     type: 'list',
     message: 'Escoja una opción:',
-    choices: ['Ingresar más productos', 'Editar productos', 'Ingresar Usuarios', 'Regresar'],
-    default: 3,
+    choices: ['Ingresar más productos', 'Ingresar Usuarios', 'Regresar'],
+    default: 2,
 };
 const ingresarUser = [{
     name: 'login',
