@@ -14,7 +14,7 @@ var menuVendedor = {
     name: 'menuVendedor',
     type: 'list',
     message: 'Escoja una opción:',
-    choices: ['Ingresar más productos', 'Ingresar Usuarios', 'Regresar'],
+    choices: ['Ingresar más productos', 'Ingresar Usuarios'],
     default: 2,
 };
 var ingresarUser = [{
@@ -31,7 +31,7 @@ var menuComprador = {
     name: 'menuComprador',
     type: 'list',
     message: 'Escoja una opción:',
-    choices: ['Escojer producto a comprar', 'Productos a comprar', 'Regresar'],
+    choices: ['Escojer producto a comprar', 'Productos a comprar'],
     default: 2,
 };
 var logi = [{
@@ -104,8 +104,6 @@ function main() {
                         respuesta.producto = productos;
                         return respuesta;
                     }));
-                case 'Regresar':
-                    main();
             }
         }
         else if (respuesta.respuestaUsuario1.queEsUsted === 'Comprador') {
@@ -134,8 +132,6 @@ function main() {
                 //enlistar los productos
                 //escojemos la opcion
                 case 'Productos a comprar':
-                case 'Regresar':
-                    main();
             }
         }
     }), map(function (respuesta) {
@@ -149,29 +145,23 @@ function main() {
                     var producto = respuesta.producto;
                     respuesta.respuestaBDD.bdd.productos.push(producto);
                     return respuesta;
-                case 'Regresar':
-                    main();
             }
         }
         else if (respuesta.respuestaUsuario1.queEsUsted === 'Comprador') {
             switch (respuesta.respuestaCompra.menuComprador) {
                 case 'Escojer producto a comprar':
                     //añadir a la compra
-                    var productoABuscar = respuesta.respuestaProducto.productos;
-                    buscarProductoPorNombre(productoABuscar).then(function (res) {
-                        return res;
-                    }).then(function (respuesta) {
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
+                    console.log(respuesta.respuestaProducto.productos);
                 case 'Productos a comprar':
-                case 'Regresar':
-                    main();
             }
         }
-    }), mergeMap(function (respuesta) {
-        return guardarBase(respuesta.respuestaBDD.bdd);
-    })).subscribe(function (mensaje) {
+    })
+    /*,mergeMap(
+        (respuesta: RespuestaUsuario) => {
+            return guardarBase(respuesta.respuestaBDD.bdd);
+        }
+    )*/
+    ).subscribe(function (mensaje) {
         console.log(mensaje);
     }, function (error) {
         console.log(error);

@@ -15,7 +15,7 @@ const menuVendedor = {
     name: 'menuVendedor',
     type: 'list',
     message: 'Escoja una opción:',
-    choices: ['Ingresar más productos', 'Ingresar Usuarios', 'Regresar'],
+    choices: ['Ingresar más productos', 'Ingresar Usuarios'],
     default: 2,
 };
 const ingresarUser = [{
@@ -32,7 +32,7 @@ const menuComprador = {
     name: 'menuComprador',
     type: 'list',
     message: 'Escoja una opción:',
-    choices: ['Escojer producto a comprar', 'Productos a comprar', 'Regresar'],
+    choices: ['Escojer producto a comprar', 'Productos a comprar'],
     default: 2,
 };
 const logi = [{
@@ -133,8 +133,6 @@ function main() {
                                     }
                                 )
                             );
-                        case 'Regresar':
-                            main()
                     }
                 }
                 else if(respuesta.respuestaUsuario1.queEsUsted === 'Comprador'){
@@ -170,8 +168,6 @@ function main() {
                             //enlistar los productos
                             //escojemos la opcion
                         case 'Productos a comprar':
-                        case 'Regresar':
-                            main()
                     }
                }
             }
@@ -188,41 +184,23 @@ function main() {
                             const producto = respuesta.producto;
                             respuesta.respuestaBDD.bdd.productos.push(producto);
                             return respuesta;
-                        case 'Regresar':
-                            main()
                     }
                 }
                 else if (respuesta.respuestaUsuario1.queEsUsted ==='Comprador'){
                     switch (respuesta.respuestaCompra.menuComprador) {
                     case 'Escojer producto a comprar':
                         //añadir a la compra
-                        const productoABuscar = respuesta.respuestaProducto.productos;
-                        buscarProductoPorNombre(productoABuscar).then(
-                            (res)=>{
-                               return res
-                            }
-                        ).then(
-                            (respuesta)=>{
-
-                            }
-                        ).catch(
-                            (err)=>{
-                                console.log(err)
-                            }
-                        )
-
+                            console.log(respuesta.respuestaProducto.productos);
                     case 'Productos a comprar':
-                    case 'Regresar':
-                        main()
                    }
                }
             }
-        ),
-        mergeMap(
+        )
+        /*,mergeMap(
             (respuesta: RespuestaUsuario) => {
                 return guardarBase(respuesta.respuestaBDD.bdd);
             }
-        )
+        )*/
     ).subscribe((mensaje) => {
             console.log(mensaje);
         },
@@ -430,10 +408,10 @@ interface OpcionesPreguntaQueEs {
     queEsUsted: 'Comprador' | 'Vendedor'
 }
 interface OpcionesPreguntaCompra{
-    menuComprador:'Escojer producto a comprar'|'Productos a comprar'| 'Regresar'
+    menuComprador:'Escojer producto a comprar'|'Productos a comprar'
 }
 interface OpcionesPreguntaVendedor{
-    menuVendedor: 'Ingresar más productos'| 'Ingresar Usuarios'| 'Regresar'
+    menuVendedor: 'Ingresar más productos'| 'Ingresar Usuarios'
 }
 interface RespuetaProducto{
     productos:any
