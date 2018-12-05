@@ -1,1 +1,1 @@
-{"usuarios":[{"nombre":"ronald","contraseña":"1234"},{"nombre":"juan","contraseña":"1234"}],"productos":[{"nombre":"lenteja","categoria":"granos","precio":"12"},{"nombre":"frejol","categoria":"granos","precio":"11"}]}
+{"productos":[{"nombre":"sandia","categoria":"frutas","precio":"12"},{"nombre":"maiz","categoria":"granos","precio":"12"},{"nombre":"leche","categoria":"lacteo","precio":"13"}]}

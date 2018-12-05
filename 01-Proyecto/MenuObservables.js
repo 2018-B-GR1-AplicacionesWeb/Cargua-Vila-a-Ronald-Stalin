@@ -1,23 +1,23 @@
-var inquirer = require('inquirer');
-var fs = require('fs');
-var rxjs = require('rxjs');
-var map = require('rxjs/operators').map;
-var mergeMap = require('rxjs/operators').mergeMap;
-var queEs = {
+const inquirer = require('inquirer');
+const fs = require('fs');
+const rxjs = require('rxjs');
+const map = require('rxjs/operators').map;
+const mergeMap = require('rxjs/operators').mergeMap;
+const queEs = {
     name: 'queEsUsted',
     type: 'list',
     message: '¿Qué es usted?',
     choices: ['Comprador', 'Vendedor'],
     default: 1,
 };
-var menuVendedor = {
+const menuVendedor = {
     name: 'menuVendedor',
     type: 'list',
     message: 'Escoja una opción:',
     choices: ['Ingresar más productos', 'Ingresar Usuarios'],
     default: 2,
 };
-var ingresarUser = [{
+const ingresarUser = [{
         name: 'nombre',
         type: 'input',
         message: 'Ingrese un usuario'
@@ -27,14 +27,14 @@ var ingresarUser = [{
         message: 'Ingrese un contraseña',
         mask: '*'
     }];
-var menuComprador = {
+const menuComprador = {
     name: 'menuComprador',
     type: 'list',
     message: 'Escoja una opción:',
     choices: ['Escojer producto a comprar', 'Productos a comprar'],
     default: 2,
 };
-var logi = [{
+const logi = [{
         name: 'user',
         type: 'input',
         message: 'Ingrese su usuario: '
@@ -44,12 +44,12 @@ var logi = [{
         message: 'Ingrese su contraseña: ',
         mask: '*'
     }];
-var confirmarMasProductos = {
+const confirmarMasProductos = {
     name: 'confirm',
     type: 'confirm',
     message: 'Desea comprar mas productos',
 };
-var ingresarProductos = [{
+const ingresarProductos = [{
         name: 'nombre',
         type: 'input',
         message: 'Ingrese el nombre del producto: '
@@ -63,17 +63,17 @@ var ingresarProductos = [{
         message: 'Ingrese el precio del producto: '
     }];
 function main() {
-    inicializarBase().pipe(mergeMap(function (respuestaBDD) {
-        return preguntaQueEs().pipe(map(function (respuesta) {
+    inicializarBase().pipe(mergeMap((respuestaBDD) => {
+        return preguntaQueEs().pipe(map((respuesta) => {
             return {
                 respuestaUsuario1: respuesta,
-                respuestaBDD: respuestaBDD
+                respuestaBDD
             };
         }));
-    }), mergeMap(function (respuestaUsuario) {
+    }), mergeMap((respuestaUsuario) => {
         switch (respuestaUsuario.respuestaUsuario1.queEsUsted) {
             case 'Comprador': {
-                return preguntasComprador().pipe(map(function (respuestaMenuComprador) {
+                return preguntasComprador().pipe(map((respuestaMenuComprador) => {
                     return {
                         respuestaUsuario1: respuestaUsuario.respuestaUsuario1,
                         respuestaCompra: respuestaMenuComprador,
@@ -82,7 +82,7 @@ function main() {
                 }));
             }
             case 'Vendedor': {
-                return preguntasVendedor().pipe(map(function (respuestaMenuVendedor) {
+                return preguntasVendedor().pipe(map((respuestaMenuVendedor) => {
                     return {
                         respuestaUsuario1: respuestaUsuario.respuestaUsuario1,
                         respuestaVenta: respuestaMenuVendedor,
@@ -91,16 +91,16 @@ function main() {
                 }));
             }
         }
-    }), mergeMap(function (respuesta) {
+    }), mergeMap((respuesta) => {
         if (respuesta.respuestaUsuario1.queEsUsted === 'Vendedor') {
             switch (respuesta.respuestaVenta.menuVendedor) {
                 case 'Ingresar Usuarios':
-                    return rxjs.from(inquirer.prompt(ingresarUser)).pipe(map(function (usuario) {
+                    return rxjs.from(inquirer.prompt(ingresarUser)).pipe(map((usuario) => {
                         respuesta.usuario = usuario;
                         return respuesta;
                     }));
                 case 'Ingresar más productos':
-                    return rxjs.from(inquirer.prompt(ingresarProductos)).pipe(map(function (productos) {
+                    return rxjs.from(inquirer.prompt(ingresarProductos)).pipe(map((productos) => {
                         respuesta.producto = productos;
                         return respuesta;
                     }));
@@ -110,18 +110,18 @@ function main() {
             switch (respuesta.respuestaCompra.menuComprador) {
                 case 'Escojer producto a comprar':
                     //leer base
-                    var productos_1 = [];
-                    respuesta.respuestaBDD.bdd.productos.forEach(function (elemento) {
-                        productos_1.push(elemento.nombre);
+                    const productos = [];
+                    respuesta.respuestaBDD.bdd.productos.forEach((elemento) => {
+                        productos.push(elemento.nombre);
                     });
-                    var listaProductos = {
+                    const listaProductos = {
                         name: 'productos',
                         type: 'list',
                         message: 'Escoja una opción:\nProducto: ',
-                        choices: productos_1,
+                        choices: productos,
                         default: 0,
                     };
-                    return rxjs.from(inquirer.prompt(listaProductos)).pipe(map(function (respuestaProductos) {
+                    return rxjs.from(inquirer.prompt(listaProductos)).pipe(map((respuestaProductos) => {
                         return {
                             respuestaUsuario1: respuesta.respuestaUsuario1,
                             respuestaCompra: respuesta.respuestaCompra,
@@ -134,15 +134,15 @@ function main() {
                 case 'Productos a comprar':
             }
         }
-    }), map(function (respuesta) {
+    }), map((respuesta) => {
         if (respuesta.respuestaUsuario1.queEsUsted === 'Vendedor') {
             switch (respuesta.respuestaVenta.menuVendedor) {
                 case 'Ingresar Usuarios':
-                    var usuario = respuesta.usuario;
+                    const usuario = respuesta.usuario;
                     respuesta.respuestaBDD.bdd.usuarios.push(usuario);
                     return respuesta;
                 case 'Ingresar más productos':
-                    var producto = respuesta.producto;
+                    const producto = respuesta.producto;
                     respuesta.respuestaBDD.bdd.productos.push(producto);
                     return respuesta;
             }
@@ -161,11 +161,11 @@ function main() {
             return guardarBase(respuesta.respuestaBDD.bdd);
         }
     )*/
-    ).subscribe(function (mensaje) {
+    ).subscribe((mensaje) => {
         console.log(mensaje);
-    }, function (error) {
+    }, (error) => {
         console.log(error);
-    }, function () {
+    }, () => {
         console.log('Completado');
         main();
     });
@@ -180,8 +180,8 @@ function preguntasVendedor() {
     return rxjs.from(inquirer.prompt(menuVendedor));
 }
 function inicializarBase() {
-    var leerBDD$ = rxjs.from(leerBDD());
-    return leerBDD$.pipe(mergeMap(function (respuestaLeerBDD) {
+    const leerBDD$ = rxjs.from(leerBDD());
+    return leerBDD$.pipe(mergeMap((respuestaLeerBDD) => {
         if (respuestaLeerBDD.bdd) {
             // truty / {}
             return rxjs.of(respuestaLeerBDD);
@@ -193,8 +193,8 @@ function inicializarBase() {
     }));
 }
 function leerBDD() {
-    return new Promise(function (resolve) {
-        fs.readFile('bdd.json', 'utf-8', function (error, contenidoLeido) {
+    return new Promise((resolve) => {
+        fs.readFile('bdd.json', 'utf-8', (error, contenidoLeido) => {
             if (error) {
                 resolve({
                     mensaje: 'Base de datos vacia',
@@ -211,9 +211,9 @@ function leerBDD() {
     });
 }
 function crearBDD() {
-    var contenidoInicialBDD = '{"usuarios":[],"productos":[]}';
-    return new Promise(function (resolve, reject) {
-        fs.writeFile('bdd.json', contenidoInicialBDD, function (err) {
+    const contenidoInicialBDD = '{"usuarios":[],"productos":[]}';
+    return new Promise((resolve, reject) => {
+        fs.writeFile('bdd.json', contenidoInicialBDD, (err) => {
             if (err) {
                 reject({
                     mensaje: 'Error creando Base',
@@ -230,8 +230,8 @@ function crearBDD() {
     });
 }
 function guardarBase(bdd) {
-    return new Promise(function (resolve, reject) {
-        fs.writeFile('bdd.json', JSON.stringify(bdd), function (err) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile('bdd.json', JSON.stringify(bdd), (err) => {
             if (err) {
                 reject({
                     mensaje: 'Error guardando BDD',
@@ -247,15 +247,15 @@ function guardarBase(bdd) {
     });
 }
 function anadirUsuario(usuario) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile('bdd.json', 'utf-8', function (err, contenido) {
+    return new Promise((resolve, reject) => {
+        fs.readFile('bdd.json', 'utf-8', (err, contenido) => {
             if (err) {
                 reject({ mensaje: 'Error leyendo' });
             }
             else {
-                var bdd = JSON.parse(contenido);
+                const bdd = JSON.parse(contenido);
                 bdd.usuarios.push(usuario);
-                fs.writeFile('bdd.json', JSON.stringify(bdd), function (err) {
+                fs.writeFile('bdd.json', JSON.stringify(bdd), (err) => {
                     if (err) {
                         reject(err);
                     }
@@ -268,20 +268,20 @@ function anadirUsuario(usuario) {
     });
 }
 function editarUsuario(nombre, nuevoNombre, nuevaContraseña) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile('bdd.json', 'utf-8', function (err, contenido) {
+    return new Promise((resolve, reject) => {
+        fs.readFile('bdd.json', 'utf-8', (err, contenido) => {
             if (err) {
                 reject({ mensaje: 'Error leyendo' });
             }
             else {
-                var bdd = JSON.parse(contenido);
-                var indiceUsuario = bdd.usuarios
-                    .findIndex(function (usuario) {
+                const bdd = JSON.parse(contenido);
+                const indiceUsuario = bdd.usuarios
+                    .findIndex((usuario) => {
                     return usuario.nombre = nombre;
                 });
                 bdd.usuarios[indiceUsuario].nombre = nuevoNombre;
                 bdd.usuarios[indiceUsuario].contraseña = nuevaContraseña;
-                fs.writeFile('bdd.json', JSON.stringify(bdd), function (err) {
+                fs.writeFile('bdd.json', JSON.stringify(bdd), (err) => {
                     if (err) {
                         reject(err);
                     }
@@ -294,15 +294,15 @@ function editarUsuario(nombre, nuevoNombre, nuevaContraseña) {
     });
 }
 function buscarProductoPorNombre(nombre) {
-    return new Promise(function (resolve, reject) {
-        fs.readFile('bdd.json', 'utf-8', function (err, contenido) {
+    return new Promise((resolve, reject) => {
+        fs.readFile('bdd.json', 'utf-8', (err, contenido) => {
             if (err) {
                 reject({ mensaje: 'Error leyendo' });
             }
             else {
-                var bdd = JSON.parse(contenido);
-                var respuestaFind = bdd.productos
-                    .find(function (producto) {
+                const bdd = JSON.parse(contenido);
+                const respuestaFind = bdd.productos
+                    .find((producto) => {
                     return producto.nombre === nombre;
                 });
                 resolve(respuestaFind);

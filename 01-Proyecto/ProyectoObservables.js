@@ -61,7 +61,7 @@ function inicialiarBDD() {
                     else {
                         resolve({
                             mensaje: 'BDD leida',
-                            bdd: JSON.parse('{"usuarios":[]}')
+                            bdd: JSON.parse('{"productos":[]}')
                         });
                     }
                 });
@@ -81,7 +81,8 @@ function main() {
         .pipe(preguntarOpcionesMenu(), opcionesRespuesta(), ejecutarAcccion(), guardarBaseDeDatos())
         .subscribe(function (data) {
         //
-        console.log(data);
+        console.log("\n*************Base Final*****************\n");
+        console.log(data.bdd.productos);
     }, function (error) {
         //
         console.log(error);
@@ -109,10 +110,8 @@ function guardarBDD(bdd) {
     });
 }
 function preguntarOpcionesMenu() {
-    return mergeMap(// Respuesta Anterior Observable
-    function (respuestaBDD) {
-        return rxjs.from(inquirer.prompt(preguntaMenu)).pipe(map(// respuesta ant obs
-        function (respuesta) {
+    return mergeMap(function (respuestaBDD) {
+        return rxjs.from(inquirer.prompt(preguntaMenu)).pipe(map(function (respuesta) {
             respuestaBDD.opcionMenu = respuesta;
             return respuestaBDD;
         }));
@@ -122,19 +121,19 @@ function opcionesRespuesta() {
     return mergeMap(function (respuestaBDD) {
         var opcion = respuestaBDD.opcionMenu.opcionMenu;
         switch (opcion) {
-            case 'Crear Producto':
+            case '1.- Crear Producto':
                 return rxjs
                     .from(inquirer.prompt(ingresarProductos))
                     .pipe(map(function (producto) {
                     respuestaBDD.producto = producto;
                     return respuestaBDD;
                 }));
-            case 'Buscar Producto':
+            case '3.- Buscar Producto':
                 return buscarProducto(respuestaBDD);
                 break;
-            case 'Actualizar Producto':
+            case '4.- Actualizar Producto':
                 return preguntarNombre(respuestaBDD);
-            case 'Borrar Producto':
+            case '2.- Borrar Producto':
                 return borrarProducto(respuestaBDD);
                 break;
         }
@@ -152,19 +151,19 @@ function ejecutarAcccion() {
     function (respuestaBDD) {
         var opcion = respuestaBDD.opcionMenu.opcionMenu;
         switch (opcion) {
-            case 'Crear Producto':
+            case '1.- Crear Producto':
                 var producto = respuestaBDD.producto;
                 respuestaBDD.bdd.productos.push(producto);
                 return respuestaBDD;
-            case 'Actualizar Producto':
+            case '4.- Actualizar Producto':
                 var indice = respuestaBDD.indiceUsuario;
                 respuestaBDD.bdd.productos[indice].nombre = respuestaBDD.producto.nombre;
                 respuestaBDD.bdd.productos[indice].categoria = respuestaBDD.producto.categoria;
                 respuestaBDD.bdd.productos[indice].precio = respuestaBDD.producto.precio;
                 return respuestaBDD;
-            case 'Borrar Producto':
+            case '2.- Borrar Producto':
                 return respuestaBDD;
-            case 'Buscar Producto':
+            case '3.- Buscar Producto':
                 return respuestaBDD;
         }
     });
@@ -180,7 +179,7 @@ function preguntarNombre(respuestaBDD) {
             return producto.nombre === respuesta.nombre;
         });
         if (indiciProducto === -1) {
-            console.log('preguntando de nuevo');
+            console.log('*************************');
             return preguntarNombre(respuestaBDD);
         }
         else {
@@ -206,10 +205,10 @@ function borrarProducto(respuestaBDD) {
             .productos
             .findIndex(// -1
         function (producto) {
-            return producto.id === respuesta.nombre;
+            return producto.nombre === respuesta.nombre;
         });
         if (indiceProducto === -1) {
-            console.log('preguntando de nuevo');
+            console.log('Borrar****************');
             return preguntarNombre(respuestaBDD);
         }
         else {
@@ -230,11 +229,10 @@ function buscarProducto(respuestaBDD) {
             return producto.nombre === respuesta.nombre;
         });
         if (indiceProducto === -1) {
-            console.log('preguntando de nuevo');
+            console.log('Buscar***********');
             return preguntarNombre(respuestaBDD);
         }
         else {
-            console.log(indiceProducto);
             return rxjs.from(promesaBuscar(respuestaBDD.bdd.productos[indiceProducto])).pipe(map(function () {
                 return respuestaBDD;
             }));
@@ -242,12 +240,17 @@ function buscarProducto(respuestaBDD) {
     }));
 }
 var promesaBuscar = function (respuestaBDD) {
-    return new Promise(function (resolve, reject) {
-        resolve(console.log(respuestaBDD));
+    return new Promise(function (resolve) {
+        var resultado = {
+            respuesta: respuestaBDD
+        };
+        console.log('\nRespuesta:\n', respuestaBDD);
+        resolve(resultado);
     });
 };
 var promesaEliminar = function (respuestaBDD, indiceProducto) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
         resolve(respuestaBDD.splice(indiceProducto, 1));
     });
 };
+main();
