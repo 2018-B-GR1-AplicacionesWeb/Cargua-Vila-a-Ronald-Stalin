@@ -93,8 +93,25 @@ export class AppController {
 
 
   }
-
+  @Get('inicio')
+      inicio(@Res() response){
+        response.render('inicio',{
+          usuario: 'Ronald',
+          arreglo:[{
+              titulo:'A',
+              descripcion:'aassadasd'
+          },{
+              titulo:'b',
+              descripcion:'aassadasd'
+          },{
+              titulo:'C',
+              descripcion:'aassadasd'
+          }],
+          booleano: true,
+        })
+  }
 }
+
 export interface Usuario {
     nombre:string;
 }

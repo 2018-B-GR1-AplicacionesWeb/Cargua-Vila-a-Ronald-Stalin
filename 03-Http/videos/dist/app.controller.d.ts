@@ -12,6 +12,7 @@ export declare class AppController {
     adiosMundoAsync(): Promise<string>;
     adiosMundoObservable(): Observable<string>;
     crearUsuario(usuario: Usuario, cabeceras: any, codigo: any, res: Response, req: Request | any): void;
+    inicio(response: any): void;
 }
 export interface Usuario {
     nombre: string;

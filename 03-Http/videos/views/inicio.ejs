@@ -1,0 +1,16 @@
+<h1><%= usuario %></h1>
+<% var vicente = 'Vicente'%>
+<h2><%= vicente%></h2>
+<ul>
+<%arreglo.forEach((noticia)=>{%>
+    <li>
+        <%= noticia.titulo %>
+        -
+        <%= noticia.descripcion %>
+        <from action = "/adiosMundoPost" method= "POST">
+        <button type="submit">Enviar</button>
+        </from>
+    </li>
+<%})%>
+</ul>
+<p>Holaaa lo que sea como estas </p>

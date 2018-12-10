@@ -87,6 +87,22 @@ let AppController = class AppController {
             });
         }
     }
+    inicio(response) {
+        response.render('inicio', {
+            usuario: 'Ronald',
+            arreglo: [{
+                    titulo: 'A',
+                    descripcion: 'aassadasd'
+                }, {
+                    titulo: 'b',
+                    descripcion: 'aassadasd'
+                }, {
+                    titulo: 'C',
+                    descripcion: 'aassadasd'
+                }],
+            booleano: true,
+        });
+    }
 };
 __decorate([
     common_1.Get(),
@@ -137,6 +153,13 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object, Object, Object, Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "crearUsuario", null);
+__decorate([
+    common_1.Get('inicio'),
+    __param(0, common_1.Res()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "inicio", null);
 AppController = __decorate([
     common_1.Controller(),
     __metadata("design:paramtypes", [app_service_1.AppService])
