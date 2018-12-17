@@ -26,14 +26,12 @@ export class NoticiaService {
         }
     ];
     numeroRegistro = 5;
-
     crear(noticia: Noticia): Noticia {
         noticia.id = this.numeroRegistro;
         this.numeroRegistro++;
         this.arreglo.push(noticia);
         return noticia;
     }
-
     eliminar(idNoticia: number): Noticia {
         const indiceNoticia = this.arreglo
             .findIndex(
@@ -43,9 +41,9 @@ export class NoticiaService {
             );
         const registroEliminado = JSON.parse(JSON.stringify(this.arreglo[indiceNoticia]));
         this.arreglo.splice(indiceNoticia, 1);
+
         return registroEliminado;
     }
-
     actualizar(idNoticia: number, nuevaNoticia: Noticia): Noticia {
         const indiceNoticia = this.arreglo
             .findIndex(
@@ -57,6 +55,4 @@ export class NoticiaService {
 
         return this.arreglo[indiceNoticia]
     }
-
-
 }

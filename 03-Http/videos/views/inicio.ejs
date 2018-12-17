@@ -20,23 +20,8 @@
 <!-- ul -> unordered list  -->
 <!-- ol -> ordered list  -->
 
-<ul>
+<!-- a -> anchor -->
 
-    <% arreglo.forEach( (noticia)=> { %>
-        <!-- li -> list item  -->
-       <!-- <li>
-            <%= noticia.titulo %>
-            -
-            <%= noticia.descripcion %>
-            <form action="/adiosMundo" method="POST">
-                <button type="button"> clickea sin problemas</button>
-                <button>Yo tambien envio informacion</button>
-                <button type="submit"> Enviar</button>
-            </form>
-        </li>
-    <% }) %>
--->
-</ul>
 <a href="/crear-noticia">
     <button>Crear noticia</button>
 </a>
@@ -56,14 +41,13 @@
             <td><%= noticia.titulo %></td>
             <td><%= noticia.descripcion %></td>
             <td>
-                <form action="/eliminar/<%=noticia.id%>" method="POST">
-                   <!-- <button type="button"> clickea sin problemas</button>
-                    <button>Yo tambien envio informacion</button>-->
+                <form action="/eliminar/<%= noticia.id %>" method="POST">
+                    <!--<button type="button"> clickea sin problemas</button>
+                    <button>Yo tambien envio informacion</button>
+                    -->
                     <button type="submit"> Eliminar</button>
                 </form>
             </td>
         </tr>
     <% }) %>
 </table>
-
-

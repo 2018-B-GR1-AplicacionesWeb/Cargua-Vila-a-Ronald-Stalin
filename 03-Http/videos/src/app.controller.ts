@@ -15,6 +15,7 @@ import {Observable, of} from "rxjs";
 import {Request, Response} from "express";
 import {NoticiaService} from "./noticia.service";
 
+
 @Controller()  //decoradores
 // Controller('usuario')
 // http://localhost:3000/usuario
@@ -154,11 +155,12 @@ export class AppController {
             'inicio',
             {
                 usuario: 'Adrian',
-                arreglo: this._noticiaService.arreglo,
+                arreglo: this._noticiaService.arreglo, // AQUI!
                 booleano: false,
             }
         );
     }
+
     @Post('eliminar/:idNoticia')
     eliminar(
         @Res() response,
@@ -183,18 +185,25 @@ export class AppController {
         @Body() noticia: Noticia
     ) {
         this._noticiaService.crear(noticia);
-        response.redirect('/inicio')
+
+        response.redirect(
+            '/inicio'
+        )
     }
+
+
 }
+
+
+export interface Usuario {
+    nombre: string;
+}
+
 export interface Noticia {
     id?: number;
     titulo: string;
     descripcion: string;
 }
 
-export interface Usuario {
-    nombre: string;
-}
 
 // http://localhost:3000
-

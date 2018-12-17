@@ -10,13 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
-const httpserver = require("http-server");
 const cookieParser = require("cookie-parser");
-console.log(httpserver);
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
-        app.use(cookieParser('me gusta los tacos', {}));
+        app.use(cookieParser('me gustan los tacos', {}));
         app.set('view engine', 'ejs');
         yield app.listen(3000);
     });

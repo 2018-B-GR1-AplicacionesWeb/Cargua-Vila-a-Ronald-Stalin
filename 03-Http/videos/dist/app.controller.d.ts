@@ -19,11 +19,11 @@ export declare class AppController {
     crearNoticiaRuta(response: any): void;
     crearNoticiaFuncion(response: any, noticia: Noticia): void;
 }
+export interface Usuario {
+    nombre: string;
+}
 export interface Noticia {
     id?: number;
     titulo: string;
     descripcion: string;
-}
-export interface Usuario {
-    nombre: string;
 }
