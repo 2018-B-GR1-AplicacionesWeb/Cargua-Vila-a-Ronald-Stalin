@@ -100,13 +100,11 @@ export class AppController {
         }
 
     }
-
     @Get('adiosMundoObservable') // url
     adiosMundoObservable(): Observable<string> {
         const respuesta$ = of('Adios Mundo');
         return respuesta$;
     }
-
     @Post('crearUsuario')
     @HttpCode(200)  // Codigo OK
     crearUsuario(
@@ -145,18 +143,35 @@ export class AppController {
 
 
     }
-
-
     @Get('inicio')
     inicio(
         @Res() response,
+        @Query()consulta,
+        @Query('accion')accion:string,
+        @Query('titulo')titulo: string
     ) {
+        console.log(consulta);
+        let mensaje= undefined;
+        if (accion && titulo){
+            switch (accion) {
+                case 'borrar':
+                    mensaje=`Registro ${titulo} eliminado`;
+                    break;
+                case 'crear':
+                    mensaje=`Registro ${titulo} creado`;
+                    break;
+                case 'actualizar':
+                    mensaje=`Registro ${titulo} actualizado`;
+                    break;
+            }
+        }
         response.render(
             'inicio',
             {
-                usuario: 'Adrian',
+                usuario: 'Ronald',
                 arreglo: this._noticiaService.arreglo, // AQUI!
                 booleano: false,
+                mensaje: mensaje
             }
         );
     }
@@ -166,8 +181,9 @@ export class AppController {
         @Res() response,
         @Param('idNoticia') idNoticia: string,
     ) {
-        this._noticiaService.eliminar(Number(idNoticia));
-        response.redirect('/inicio')
+        const noticiaBorrada = this._noticiaService.eliminar(Number(idNoticia));
+        const parametrosConsulta=`?accion=borrar&titulo=${noticiaBorrada.titulo}`;
+        response.redirect('/inicio'+parametrosConsulta)
     }
 
     @Get('crear-noticia')
@@ -184,13 +200,35 @@ export class AppController {
         @Res() response,
         @Body() noticia: Noticia
     ) {
-        this._noticiaService.crear(noticia);
-
+        const noticiaCreada = this._noticiaService.crear(noticia);
+        const parametroConsulta = `?accion=crear&titulo=${noticiaCreada.titulo}`;
         response.redirect(
-            '/inicio'
+            '/inicio'+parametroConsulta
         )
     }
-
+    @Get('actualizar-noticia/:idNoticia')
+    actualizarNoticiaVista(
+        @Res() response,
+        @Param('idNoticia') idNoticia:string
+    ){
+        //El "+" le transforma en un numero a un string
+        //numerico
+        const noticiaEncontrada = this._noticiaService.buscarPorId(+idNoticia);
+        response.render('crear-noticia',{
+            noticia: noticiaEncontrada
+        })
+    }
+    @Post('actualizar-noticia/:idNoticia')
+    actualizarNoticiaMetodo(
+        @Res() response,
+        @Param('idNoticia') idNoticia:string,
+        @Body()noticia: Noticia
+    ){
+        noticia.id = +idNoticia;
+        const actualizarNoticia = this._noticiaService.actualizar(+idNoticia,noticia);
+        const noticiaActualizada =`?accion=actualizar&&titulo=${actualizarNoticia.titulo}`;
+        response.redirect('/inicio'+noticiaActualizada)
+    }
 
 }
 

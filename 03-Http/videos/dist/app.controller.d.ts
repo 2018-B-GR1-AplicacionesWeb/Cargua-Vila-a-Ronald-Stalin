@@ -14,10 +14,12 @@ export declare class AppController {
     adiosMundoAsync(): Promise<string>;
     adiosMundoObservable(): Observable<string>;
     crearUsuario(usuario: Usuario, nombre: string, cabeceras: any, codigo: any, res: Response, req: Request | any): void;
-    inicio(response: any): void;
+    inicio(response: any, consulta: any, accion: string, titulo: string): void;
     eliminar(response: any, idNoticia: string): void;
     crearNoticiaRuta(response: any): void;
     crearNoticiaFuncion(response: any, noticia: Noticia): void;
+    actualizarNoticiaVista(response: any, idNoticia: string): void;
+    actualizarNoticiaMetodo(response: any, idNoticia: string, noticia: Noticia): void;
 }
 export interface Usuario {
     nombre: string;

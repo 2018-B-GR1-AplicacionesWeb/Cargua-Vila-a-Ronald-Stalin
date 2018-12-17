@@ -56,6 +56,13 @@ let NoticiaService = class NoticiaService {
         this.arreglo[indiceNoticia] = nuevaNoticia;
         return this.arreglo[indiceNoticia];
     }
+    buscarPorId(idNoticia) {
+        const indiceNoticia = this.arreglo
+            .findIndex((noticia) => {
+            return noticia.id === idNoticia;
+        });
+        return this.arreglo[indiceNoticia];
+    }
 };
 NoticiaService = __decorate([
     common_1.Injectable()

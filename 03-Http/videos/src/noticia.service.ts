@@ -55,4 +55,13 @@ export class NoticiaService {
 
         return this.arreglo[indiceNoticia]
     }
+    buscarPorId(idNoticia: number): Noticia{
+        const indiceNoticia = this.arreglo
+            .findIndex(
+                (noticia) => {
+                    return noticia.id === idNoticia
+                }
+            );
+        return this.arreglo[indiceNoticia];
+    }
 }

@@ -97,23 +97,53 @@ let AppController = class AppController {
             });
         }
     }
-    inicio(response) {
+    inicio(response, consulta, accion, titulo) {
+        console.log(consulta);
+        let mensaje = undefined;
+        if (accion && titulo) {
+            switch (accion) {
+                case 'borrar':
+                    mensaje = `Registro ${titulo} eliminado`;
+                    break;
+                case 'crear':
+                    mensaje = `Registro ${titulo} creado`;
+                    break;
+                case 'actualizar':
+                    mensaje = `Registro ${titulo} actualizado`;
+                    break;
+            }
+        }
         response.render('inicio', {
-            usuario: 'Adrian',
+            usuario: 'Ronald',
             arreglo: this._noticiaService.arreglo,
             booleano: false,
+            mensaje: mensaje
         });
     }
     eliminar(response, idNoticia) {
-        this._noticiaService.eliminar(Number(idNoticia));
-        response.redirect('/inicio');
+        const noticiaBorrada = this._noticiaService.eliminar(Number(idNoticia));
+        const parametrosConsulta = `?accion=borrar&titulo=${noticiaBorrada.titulo}`;
+        response.redirect('/inicio' + parametrosConsulta);
     }
     crearNoticiaRuta(response) {
         response.render('crear-noticia');
     }
     crearNoticiaFuncion(response, noticia) {
-        this._noticiaService.crear(noticia);
-        response.redirect('/inicio');
+        const noticiaCreada = this._noticiaService.crear(noticia);
+        const parametroConsulta = `?accion=crear&titulo=${noticiaCreada.titulo}`;
+        response.redirect('/inicio' + parametroConsulta);
+    }
+    actualizarNoticiaVista(response, idNoticia) {
+        const noticiaEncontrada = this._noticiaService.buscarPorId(+idNoticia);
+        response.render('crear-noticia', {
+            noticia: noticiaEncontrada
+        });
+    }
+    actualizarNoticiaMetodo(response, idNoticia, noticia) {
+        noticia.id = +idNoticia;
+        const actualizarNoticia = this._noticiaService.actualizar(+idNoticia, noticia);
+        const noticiaActualizada = `?accion=actualizar&&titulo=${actualizarNoticia.titulo}`;
+        response.redirect('/inicio' + noticiaActualizada);
     }
 };
 __decorate([
@@ -180,8 +210,11 @@ __decorate([
 __decorate([
     common_1.Get('inicio'),
     __param(0, common_1.Res()),
+    __param(1, common_1.Query()),
+    __param(2, common_1.Query('accion')),
+    __param(3, common_1.Query('titulo')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, Object, String, String]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "inicio", null);
 __decorate([
@@ -207,6 +240,23 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "crearNoticiaFuncion", null);
+__decorate([
+    common_1.Get('actualizar-noticia/:idNoticia'),
+    __param(0, common_1.Res()),
+    __param(1, common_1.Param('idNoticia')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "actualizarNoticiaVista", null);
+__decorate([
+    common_1.Post('actualizar-noticia/:idNoticia'),
+    __param(0, common_1.Res()),
+    __param(1, common_1.Param('idNoticia')),
+    __param(2, common_1.Body()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String, Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "actualizarNoticiaMetodo", null);
 AppController = __decorate([
     common_1.Controller(),
     __metadata("design:paramtypes", [app_service_1.AppService,

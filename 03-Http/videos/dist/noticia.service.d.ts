@@ -5,4 +5,5 @@ export declare class NoticiaService {
     crear(noticia: Noticia): Noticia;
     eliminar(idNoticia: number): Noticia;
     actualizar(idNoticia: number, nuevaNoticia: Noticia): Noticia;
+    buscarPorId(idNoticia: number): Noticia;
 }
