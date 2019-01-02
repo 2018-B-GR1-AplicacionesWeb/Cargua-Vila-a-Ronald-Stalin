@@ -1,7 +1,7 @@
 import { AppService } from './app.service';
 import { Observable } from "rxjs";
 import { Request, Response } from "express";
-import { NoticiaService } from "./noticia.service";
+import { NoticiaService } from "./noticia/noticia.service";
 export declare class AppController {
     private readonly _appService;
     private readonly _noticiaService;

@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
 const rxjs_1 = require("rxjs");
-const noticia_service_1 = require("./noticia.service");
+const noticia_service_1 = require("./noticia/noticia.service");
 let AppController = class AppController {
     constructor(_appService, _noticiaService) {
         this._appService = _appService;
