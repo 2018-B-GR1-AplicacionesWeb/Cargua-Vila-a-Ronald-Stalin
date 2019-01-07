@@ -1,9 +1,15 @@
 import { Noticia } from "../app.controller";
+import { Repository } from "typeorm";
+import { NoticiaEntity } from "./noticia-entity";
+import { FindManyOptions } from "typeorm";
 export declare class NoticiaService {
+    private readonly _noticiaRepository;
     arreglo: Noticia[];
     numeroRegistro: number;
-    crear(noticia: Noticia): Noticia;
-    eliminar(idNoticia: number): Noticia;
-    actualizar(idNoticia: number, nuevaNoticia: Noticia): Noticia;
-    buscarPorId(idNoticia: number): Noticia;
+    constructor(_noticiaRepository: Repository<NoticiaEntity>);
+    buscar(parametrosBusqueda?: FindManyOptions<NoticiaEntity>): Promise<NoticiaEntity[]>;
+    crear(noticia: Noticia): Promise<NoticiaEntity>;
+    eliminar(idNoticia: number): Promise<NoticiaEntity>;
+    actualizar(nuevaNoticia: Noticia): Promise<NoticiaEntity>;
+    buscarPorId(idNoticia: number): Promise<NoticiaEntity>;
 }

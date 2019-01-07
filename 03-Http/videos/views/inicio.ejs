@@ -29,7 +29,7 @@
     <button>Buscar</button>
 </from>
 
-<a href="/crear-noticia">
+<a href="/noticia/crear-noticia">
     <button>Crear noticia</button>
 </a>
 
@@ -48,7 +48,7 @@
             <td><%= noticia.titulo %></td>
             <td><%= noticia.descripcion %></td>
             <td>
-                <form action="/eliminar/<%= noticia.id %>" method="POST">
+                <form action="/noticia/eliminar/<%= noticia.id %>" method="POST">
                     <!--<button type="button"> clickea sin problemas</button>
                     <button>Yo tambien envio informacion</button>
                     -->
@@ -56,7 +56,7 @@
 
                 </form>
                 <from>
-                    <a href="/actualizar-noticia/<%= noticia.id %>">
+                    <a href="/noticia/actualizar-noticia/<%= noticia.id %>">
                         <button type="submit">Actualizar</button>
                     </a>
                 </from>

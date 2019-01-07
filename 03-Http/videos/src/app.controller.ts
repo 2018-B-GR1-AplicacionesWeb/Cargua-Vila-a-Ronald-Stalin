@@ -143,7 +143,7 @@ export class AppController {
 
 
     }
-    @Get('inicio')
+/*    @Get('inicio')
     inicio(
         @Res() response,
         @Query()consulta,
@@ -229,7 +229,7 @@ export class AppController {
         const noticiaActualizada =`?accion=actualizar&&titulo=${actualizarNoticia.titulo}`;
         response.redirect('/inicio'+noticiaActualizada)
     }
-
+*/
 }
 
 

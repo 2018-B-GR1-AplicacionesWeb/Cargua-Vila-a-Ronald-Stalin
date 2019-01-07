@@ -9,9 +9,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const noticia_service_1 = require("./noticia/noticia.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const noticia_entity_1 = require("./noticia/noticia-entity");
+const noticia_module_1 = require("./noticia/noticia.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -20,20 +20,20 @@ AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'mysql',
                 host: 'localhost',
-                port: 32783,
+                port: 32769,
                 username: 'web',
                 password: '12345678',
                 database: 'bddweb',
                 synchronize: true,
+                dropSchema: true,
                 entities: [
                     noticia_entity_1.NoticiaEntity
                 ]
-            })
+            }),
+            noticia_module_1.NoticiaModule
         ],
         controllers: [app_controller_1.AppController],
-        providers: [
-            app_service_1.AppService,
-            noticia_service_1.NoticiaService
+        providers: [app_service_1.AppService
         ],
     })
 ], AppModule);

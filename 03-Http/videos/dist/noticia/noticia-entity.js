@@ -10,15 +10,31 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-class NoticiaEntity {
-}
+let NoticiaEntity = class NoticiaEntity {
+};
 __decorate([
-    typeorm_1.Column(),
+    typeorm_1.PrimaryGeneratedColumn(),
+    __metadata("design:type", Number)
+], NoticiaEntity.prototype, "id", void 0);
+__decorate([
+    typeorm_1.Index(),
+    typeorm_1.Column({
+        name: 'titulo_noticia',
+        type: 'varchar',
+        length: 50
+    }),
     __metadata("design:type", String)
 ], NoticiaEntity.prototype, "titulo", void 0);
 __decorate([
-    typeorm_1.Column(),
+    typeorm_1.Column({
+        name: 'descripcion_noticia',
+        type: 'text',
+        nullable: true
+    }),
     __metadata("design:type", String)
 ], NoticiaEntity.prototype, "descripcion", void 0);
+NoticiaEntity = __decorate([
+    typeorm_1.Entity('noticia')
+], NoticiaEntity);
 exports.NoticiaEntity = NoticiaEntity;
 //# sourceMappingURL=noticia-entity.js.map

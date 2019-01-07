@@ -5,10 +5,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
+const typeorm_1 = require("typeorm");
+const typeorm_2 = require("@nestjs/typeorm");
+const noticia_entity_1 = require("./noticia-entity");
 let NoticiaService = class NoticiaService {
-    constructor() {
+    constructor(_noticiaRepository) {
+        this._noticiaRepository = _noticiaRepository;
         this.arreglo = [
             {
                 id: 1,
@@ -33,39 +43,32 @@ let NoticiaService = class NoticiaService {
         ];
         this.numeroRegistro = 5;
     }
+    buscar(parametrosBusqueda) {
+        return this._noticiaRepository.find();
+    }
     crear(noticia) {
-        noticia.id = this.numeroRegistro;
-        this.numeroRegistro++;
-        this.arreglo.push(noticia);
-        return noticia;
+        const noticiaEntity = this._noticiaRepository.create(noticia);
+        return this._noticiaRepository.save(noticiaEntity);
     }
     eliminar(idNoticia) {
-        const indiceNoticia = this.arreglo
-            .findIndex((noticia) => {
-            return noticia.id === idNoticia;
+        const noticiaAEliminar = this._noticiaRepository
+            .create({
+            id: idNoticia
         });
-        const registroEliminado = JSON.parse(JSON.stringify(this.arreglo[indiceNoticia]));
-        this.arreglo.splice(indiceNoticia, 1);
-        return registroEliminado;
+        return this._noticiaRepository.remove(noticiaAEliminar);
     }
-    actualizar(idNoticia, nuevaNoticia) {
-        const indiceNoticia = this.arreglo
-            .findIndex((noticia) => {
-            return noticia.id === idNoticia;
-        });
-        this.arreglo[indiceNoticia] = nuevaNoticia;
-        return this.arreglo[indiceNoticia];
+    actualizar(nuevaNoticia) {
+        const noticiaEntity = this._noticiaRepository.create(nuevaNoticia);
+        return this._noticiaRepository.save(noticiaEntity);
     }
     buscarPorId(idNoticia) {
-        const indiceNoticia = this.arreglo
-            .findIndex((noticia) => {
-            return noticia.id === idNoticia;
-        });
-        return this.arreglo[indiceNoticia];
+        return this._noticiaRepository.findOne(idNoticia);
     }
 };
 NoticiaService = __decorate([
-    common_1.Injectable()
+    common_1.Injectable(),
+    __param(0, typeorm_2.InjectRepository(noticia_entity_1.NoticiaEntity)),
+    __metadata("design:paramtypes", [typeorm_1.Repository])
 ], NoticiaService);
 exports.NoticiaService = NoticiaService;
 //# sourceMappingURL=noticia.service.js.map
