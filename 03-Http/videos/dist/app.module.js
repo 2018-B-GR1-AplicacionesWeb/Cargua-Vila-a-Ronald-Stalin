@@ -12,6 +12,10 @@ const app_service_1 = require("./app.service");
 const typeorm_1 = require("@nestjs/typeorm");
 const noticia_entity_1 = require("./noticia/noticia-entity");
 const noticia_module_1 = require("./noticia/noticia.module");
+const pagina_entity_1 = require("./pagina/pagina.entity");
+const articulo_entity_1 = require("./articulo/articulo.entity");
+const usuario_entity_1 = require("./usuario/usuario.entity");
+const usuario_module_1 = require("./usuario/usuario.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -25,12 +29,15 @@ AppModule = __decorate([
                 password: '12345678',
                 database: 'bddweb',
                 synchronize: true,
-                dropSchema: true,
+                dropSchema: false,
                 entities: [
-                    noticia_entity_1.NoticiaEntity
+                    noticia_entity_1.NoticiaEntity,
+                    pagina_entity_1.PaginaEntity,
+                    articulo_entity_1.ArticuloEntity,
+                    usuario_entity_1.UsuarioEntity
                 ]
             }),
-            noticia_module_1.NoticiaModule
+            noticia_module_1.NoticiaModule, usuario_module_1.UsuarioModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService

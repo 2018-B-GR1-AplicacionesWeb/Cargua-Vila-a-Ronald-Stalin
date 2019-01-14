@@ -24,10 +24,12 @@ const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
 const rxjs_1 = require("rxjs");
 const noticia_service_1 = require("./noticia/noticia.service");
+const usuario_service_1 = require("./usuario/usuario.service");
 let AppController = class AppController {
-    constructor(_appService, _noticiaService) {
+    constructor(_appService, _noticiaService, _usuarioService) {
         this._appService = _appService;
         this._noticiaService = _noticiaService;
+        this._usuarioService = _usuarioService;
     }
     raiz(todosQueryParams, nombre) {
         console.log(todosQueryParams);
@@ -97,6 +99,22 @@ let AppController = class AppController {
             });
         }
     }
+    mostrarLogin(res) {
+        res.render('login');
+    }
+    ejecutarLogin(username, password, res, session) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const respuesta = yield this._usuarioService.autenticar(username, password);
+            console.log(session);
+            if (respuesta) {
+                session.usuario = username;
+                res.send('ok');
+            }
+            else {
+                res.redirect('login');
+            }
+        });
+    }
 };
 __decorate([
     common_1.Get(),
@@ -159,10 +177,29 @@ __decorate([
     __metadata("design:paramtypes", [Object, String, Object, Object, Object, Object]),
     __metadata("design:returntype", void 0)
 ], AppController.prototype, "crearUsuario", null);
+__decorate([
+    common_1.Get('login'),
+    __param(0, common_1.Res()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "mostrarLogin", null);
+__decorate([
+    common_1.Post('login'),
+    common_1.HttpCode(200),
+    __param(0, common_1.Body('username')),
+    __param(1, common_1.Body('password')),
+    __param(2, common_1.Res()),
+    __param(3, common_1.Session()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, Object, Object]),
+    __metadata("design:returntype", Promise)
+], AppController.prototype, "ejecutarLogin", null);
 AppController = __decorate([
     common_1.Controller(),
     __metadata("design:paramtypes", [app_service_1.AppService,
-        noticia_service_1.NoticiaService])
+        noticia_service_1.NoticiaService,
+        usuario_service_1.UsuarioService])
 ], AppController);
 exports.AppController = AppController;
 //# sourceMappingURL=app.controller.js.map

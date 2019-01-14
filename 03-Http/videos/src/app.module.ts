@@ -5,6 +5,10 @@ import {NoticiaService} from "./noticia/noticia.service";
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {NoticiaEntity} from "./noticia/noticia-entity";
 import {NoticiaModule} from "./noticia/noticia.module";
+import {PaginaEntity} from "./pagina/pagina.entity";
+import {ArticuloEntity} from "./articulo/articulo.entity";
+import {UsuarioEntity} from "./usuario/usuario.entity";
+import {UsuarioModule} from "./usuario/usuario.module";
 
 @Module({
     imports: [
@@ -17,13 +21,16 @@ import {NoticiaModule} from "./noticia/noticia.module";
                 password: '12345678',
                 database: 'bddweb',
                 synchronize: true,
-                dropSchema: true,
+                dropSchema: false,
                 entities: [
-                    NoticiaEntity
+                    NoticiaEntity,
+                    PaginaEntity,
+                    ArticuloEntity,
+                    UsuarioEntity
                 ]
             }
         )
-        ,NoticiaModule
+        ,NoticiaModule,UsuarioModule
     ],  // MODULOS
     controllers: [AppController],  // Controllers
     providers: [ AppService
