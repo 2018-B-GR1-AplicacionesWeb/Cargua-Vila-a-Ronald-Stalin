@@ -16,7 +16,8 @@ let NoticiaModule = class NoticiaModule {
 NoticiaModule = __decorate([
     common_1.Module({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([
+            typeorm_1.TypeOrmModule
+                .forFeature([
                 noticia_entity_1.NoticiaEntity
             ])
         ],

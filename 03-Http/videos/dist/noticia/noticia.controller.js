@@ -22,30 +22,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const noticia_service_1 = require("./noticia.service");
+const typeorm_1 = require("typeorm");
 let NoticiaController = class NoticiaController {
     constructor(_noticiaService) {
         this._noticiaService = _noticiaService;
     }
-    inicio(response, consulta, accion, titulo) {
+    inicio(response, busqueda, accion, titulo) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(consulta);
             let mensaje = undefined;
             if (accion && titulo) {
                 switch (accion) {
                     case 'borrar':
                         mensaje = `Registro ${titulo} eliminado`;
-                        break;
-                    case 'crear':
-                        mensaje = `Registro ${titulo} creado`;
-                        break;
-                    case 'actualizar':
-                        mensaje = `Registro ${titulo} actualizado`;
-                        break;
                 }
             }
-            const noticias = yield this._noticiaService.buscar();
+            let noticias;
+            if (busqueda) {
+                const consulta = {
+                    where: [
+                        {
+                            titulo: typeorm_1.Like(`%${busqueda}%`)
+                        },
+                        {
+                            descripcion: typeorm_1.Like(`%${busqueda}%`)
+                        }
+                    ]
+                };
+                noticias = yield this._noticiaService.buscar(consulta);
+            }
+            else {
+                noticias = yield this._noticiaService.buscar();
+            }
             response.render('inicio', {
-                usuario: 'Ronald',
+                usuario: 'Adrian',
                 arreglo: noticias,
                 booleano: false,
                 mensaje: mensaje
@@ -65,7 +74,8 @@ let NoticiaController = class NoticiaController {
     }
     crearNoticiaFuncion(response, noticia) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this._noticiaService.crear(noticia);
+            const respuesta = yield this._noticiaService.crear(noticia);
+            console.log(respuesta);
             response.redirect('/noticia/inicio');
         });
     }
@@ -73,12 +83,13 @@ let NoticiaController = class NoticiaController {
         return __awaiter(this, void 0, void 0, function* () {
             const noticiaEncontrada = yield this._noticiaService
                 .buscarPorId(+idNoticia);
-            response.render('crear-noticia', {
+            response
+                .render('crear-noticia', {
                 noticia: noticiaEncontrada
             });
         });
     }
-    actualizarNoticiaMetodo(response, idNoticia, noticia) {
+    actualizarNoticiaMetedo(response, idNoticia, noticia) {
         return __awaiter(this, void 0, void 0, function* () {
             noticia.id = +idNoticia;
             yield this._noticiaService.actualizar(noticia);
@@ -89,11 +100,11 @@ let NoticiaController = class NoticiaController {
 __decorate([
     common_1.Get('inicio'),
     __param(0, common_1.Res()),
-    __param(1, common_1.Query()),
+    __param(1, common_1.Query('busqueda')),
     __param(2, common_1.Query('accion')),
     __param(3, common_1.Query('titulo')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object, String, String]),
+    __metadata("design:paramtypes", [Object, String, String, String]),
     __metadata("design:returntype", Promise)
 ], NoticiaController.prototype, "inicio", null);
 __decorate([
@@ -135,7 +146,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, String, Object]),
     __metadata("design:returntype", Promise)
-], NoticiaController.prototype, "actualizarNoticiaMetodo", null);
+], NoticiaController.prototype, "actualizarNoticiaMetedo", null);
 NoticiaController = __decorate([
     common_1.Controller('noticia'),
     __metadata("design:paramtypes", [noticia_service_1.NoticiaService])

@@ -1,7 +1,6 @@
 import { Noticia } from "../app.controller";
-import { Repository } from "typeorm";
 import { NoticiaEntity } from "./noticia-entity";
-import { FindManyOptions } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 export declare class NoticiaService {
     private readonly _noticiaRepository;
     arreglo: Noticia[];

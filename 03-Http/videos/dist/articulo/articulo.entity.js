@@ -11,34 +11,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const pagina_entity_1 = require("../pagina/pagina.entity");
-let NoticiaEntity = class NoticiaEntity {
+let ArticuloEntity = class ArticuloEntity {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], NoticiaEntity.prototype, "id", void 0);
+], ArticuloEntity.prototype, "id", void 0);
 __decorate([
-    typeorm_1.Index(),
-    typeorm_1.Column({
-        name: 'titulo_noticia',
-        type: 'varchar',
-        length: 50
-    }),
+    typeorm_1.Column(),
     __metadata("design:type", String)
-], NoticiaEntity.prototype, "titulo", void 0);
+], ArticuloEntity.prototype, "texto", void 0);
 __decorate([
-    typeorm_1.Column({
-        name: 'descripcion_noticia',
-        type: 'varchar'
-    }),
-    __metadata("design:type", String)
-], NoticiaEntity.prototype, "descripcion", void 0);
-__decorate([
-    typeorm_1.OneToMany(type => pagina_entity_1.PaginaEntity, pagina => pagina.noticia),
-    __metadata("design:type", Array)
-], NoticiaEntity.prototype, "paginas", void 0);
-NoticiaEntity = __decorate([
-    typeorm_1.Entity('noticia')
-], NoticiaEntity);
-exports.NoticiaEntity = NoticiaEntity;
-//# sourceMappingURL=noticia-entity.js.map
+    typeorm_1.ManyToOne(type => pagina_entity_1.PaginaEntity, pagina => pagina.articulos),
+    __metadata("design:type", pagina_entity_1.PaginaEntity)
+], ArticuloEntity.prototype, "pagina", void 0);
+ArticuloEntity = __decorate([
+    typeorm_1.Entity('articulo')
+], ArticuloEntity);
+exports.ArticuloEntity = ArticuloEntity;
+//# sourceMappingURL=articulo.entity.js.map

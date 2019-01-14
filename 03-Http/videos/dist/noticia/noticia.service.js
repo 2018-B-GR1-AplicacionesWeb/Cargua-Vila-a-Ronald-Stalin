@@ -13,9 +13,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
+const noticia_entity_1 = require("./noticia-entity");
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
-const noticia_entity_1 = require("./noticia-entity");
 let NoticiaService = class NoticiaService {
     constructor(_noticiaRepository) {
         this._noticiaRepository = _noticiaRepository;
@@ -44,10 +44,11 @@ let NoticiaService = class NoticiaService {
         this.numeroRegistro = 5;
     }
     buscar(parametrosBusqueda) {
-        return this._noticiaRepository.find();
+        return this._noticiaRepository.find(parametrosBusqueda);
     }
     crear(noticia) {
-        const noticiaEntity = this._noticiaRepository.create(noticia);
+        const noticiaEntity = this._noticiaRepository
+            .create(noticia);
         return this._noticiaRepository.save(noticiaEntity);
     }
     eliminar(idNoticia) {
@@ -58,7 +59,8 @@ let NoticiaService = class NoticiaService {
         return this._noticiaRepository.remove(noticiaAEliminar);
     }
     actualizar(nuevaNoticia) {
-        const noticiaEntity = this._noticiaRepository.create(nuevaNoticia);
+        const noticiaEntity = this._noticiaRepository
+            .create(nuevaNoticia);
         return this._noticiaRepository.save(noticiaEntity);
     }
     buscarPorId(idNoticia) {

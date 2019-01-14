@@ -10,35 +10,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
-const pagina_entity_1 = require("../pagina/pagina.entity");
-let NoticiaEntity = class NoticiaEntity {
+const noticia_entity_1 = require("../noticia/noticia-entity");
+const articulo_entity_1 = require("../articulo/articulo.entity");
+let PaginaEntity = class PaginaEntity {
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
     __metadata("design:type", Number)
-], NoticiaEntity.prototype, "id", void 0);
+], PaginaEntity.prototype, "id", void 0);
 __decorate([
-    typeorm_1.Index(),
-    typeorm_1.Column({
-        name: 'titulo_noticia',
-        type: 'varchar',
-        length: 50
-    }),
-    __metadata("design:type", String)
-], NoticiaEntity.prototype, "titulo", void 0);
+    typeorm_1.Column(),
+    __metadata("design:type", Number)
+], PaginaEntity.prototype, "numero", void 0);
 __decorate([
-    typeorm_1.Column({
-        name: 'descripcion_noticia',
-        type: 'varchar'
-    }),
-    __metadata("design:type", String)
-], NoticiaEntity.prototype, "descripcion", void 0);
+    typeorm_1.ManyToOne(type => noticia_entity_1.NoticiaEntity, noticia => noticia.paginas),
+    __metadata("design:type", noticia_entity_1.NoticiaEntity)
+], PaginaEntity.prototype, "noticia", void 0);
 __decorate([
-    typeorm_1.OneToMany(type => pagina_entity_1.PaginaEntity, pagina => pagina.noticia),
+    typeorm_1.OneToMany(type => articulo_entity_1.ArticuloEntity, articulo => articulo.pagina),
     __metadata("design:type", Array)
-], NoticiaEntity.prototype, "paginas", void 0);
-NoticiaEntity = __decorate([
-    typeorm_1.Entity('noticia')
-], NoticiaEntity);
-exports.NoticiaEntity = NoticiaEntity;
-//# sourceMappingURL=noticia-entity.js.map
+], PaginaEntity.prototype, "articulos", void 0);
+PaginaEntity = __decorate([
+    typeorm_1.Entity('pagina')
+], PaginaEntity);
+exports.PaginaEntity = PaginaEntity;
+//# sourceMappingURL=pagina.entity.js.map
