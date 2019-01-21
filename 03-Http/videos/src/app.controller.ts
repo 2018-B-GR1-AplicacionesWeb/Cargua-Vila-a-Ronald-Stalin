@@ -20,12 +20,16 @@ import {UsuarioService} from "./usuario/usuario.service";
 // Controller('usuario')
 // http://localhost:3000/usuario
 export class AppController {
+
+
     // public servicio:AppService;
     constructor(private readonly _appService: AppService,
                 private readonly _noticiaService: NoticiaService,
-                private  readonly _usuarioService : UsuarioService) {  // NO ES UN CONSTRUCTOR
+                private readonly _usuarioService: UsuarioService) {  // NO ES UN CONSTRUCTOR
         // this.servicio = servicio;
     }
+
+
     @Get() // http://ip:puerto
     // @Get('crear')
     // http://localhost:3000/usuario/crear?nombre=Adrian
@@ -37,6 +41,7 @@ export class AppController {
         console.log(todosQueryParams);
         return 'Hola Mundo' + nombre;
     }
+
     @Get('segmentoUno/segmentoDos/:idUsuario')  // PARAMETRO RUTA
     // http://localhost:3000/usuario/segmentoUno/segmentoDos/10
     parametroRuta(
@@ -63,6 +68,7 @@ export class AppController {
             }
         );
     }
+
     @Get('adiosMundoPromesa') // url
     adiosMundoPromesa(): Promise<string> {
         const promesaAdios = (): Promise<string> => {
@@ -74,6 +80,8 @@ export class AppController {
         };
         return promesaAdios();
     }
+
+
     @Get('adiosMundoAsync') // url
     @HttpCode(201)
     async adiosMundoAsync() {
@@ -93,11 +101,13 @@ export class AppController {
         }
 
     }
+
     @Get('adiosMundoObservable') // url
     adiosMundoObservable(): Observable<string> {
         const respuesta$ = of('Adios Mundo');
         return respuesta$;
     }
+
     @Post('crearUsuario')
     @HttpCode(200)  // Codigo OK
     crearUsuario(
@@ -133,31 +143,56 @@ export class AppController {
                 error: 401
             })
         }
+
+
     }
+
+
+    // app.controller.ts
     @Get('login')
     mostrarLogin(
         @Res() res
-    ){
-        res.render('login')
+    ) {
+        res.render('login');
     }
+
     @Post('login')
     @HttpCode(200)
     async ejecutarLogin(
-        @Body('username')username: string,
-        @Body ('password') password : string,
+        @Body('username') username: string,
+        @Body('password') password: string,
         @Res() res,
-        @Session() session
-    ){
-        const respuesta = await  this._usuarioService.autenticar(username, password);
-        console.log(session);
-        if (respuesta){
-            session.usuario = username;
+        @Session() sesion
+    ) {
+        const respuesta = await this._usuarioService
+            .autenticar(username, password);
+
+        console.log(sesion);
+
+        if (respuesta) {
+            sesion.usuario = username;
             res.send('ok');
-        }else{
-            res.redirect('login')
+        } else {
+            res.redirect('login');
         }
+
     }
+
+
+    @Get('logout')
+    logout(
+        @Res() res,
+        @Session() sesion
+    ) {
+        sesion.username = undefined;
+        sesion.destroy();
+        res.redirect('login');
+    }
+
+
 }
+
+
 export interface Usuario {
     nombre: string;
 }
@@ -170,3 +205,5 @@ export interface Noticia {
 
 
 // http://localhost:3000
+
+

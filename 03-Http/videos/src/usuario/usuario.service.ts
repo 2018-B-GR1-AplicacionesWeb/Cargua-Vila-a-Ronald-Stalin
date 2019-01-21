@@ -1,32 +1,49 @@
-//usuario.service.ts
+// usuario.service.ts
 
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {UsuarioEntity} from "./usuario.entity";
 import {FindOneOptions, Repository} from "typeorm";
+import {UsuarioEntity} from "./usuario.entity";
 
 @Injectable()
 export class UsuarioService {
+
+    // Inyectar las dependencias
     constructor(
         @InjectRepository(UsuarioEntity)
         private readonly _usuarioRepository:
             Repository<UsuarioEntity>
-    ){
+    ) {
     }
-    async autenticar(username: string, password : string){
-        //Password encriptado
-        //Encriptar el password que les llega
-        const consulta : FindOneOptions<UsuarioEntity>={
-            where:{
-                username : username,
-                password : password // passeword encriptado
+
+    async autenticar(username: string,
+                     password: string): Promise<boolean> {
+        // Password encriptada
+        // Encriptar el passwrod que les llega
+
+        const consulta: FindOneOptions<UsuarioEntity> = {
+            where: {
+                username: username,
+                password: password // password encriptado
             }
         };
+        
         const respuesta = await this._usuarioRepository.findOne(consulta);
-        if (respuesta){
+
+        if (respuesta) {
             return true;
-        }else{
+        } else {
             return false;
         }
+
     }
+
 }
+
+
+
+
+
+
+
+

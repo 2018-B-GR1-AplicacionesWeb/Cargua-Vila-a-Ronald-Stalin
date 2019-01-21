@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import {Usuario} from "./app.controller";
+import {Injectable} from '@nestjs/common';
+import {Usuario} from './app.controller';
 
 @Injectable()
 export class AppService {

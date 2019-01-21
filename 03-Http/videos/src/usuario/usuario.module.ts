@@ -1,8 +1,8 @@
-//usuario.module.ts
+// usuario.module.ts
 
 import {Module} from "@nestjs/common";
 import {UsuarioService} from "./usuario.service";
-import {TypeOrmModule} from "@nestjs/typeorm";
+import {TypeOrmModule} from '@nestjs/typeorm';
 import {UsuarioEntity} from "./usuario.entity";
 
 @Module({
@@ -15,10 +15,9 @@ import {UsuarioEntity} from "./usuario.entity";
     providers: [
         UsuarioService
     ],
-    exports:[
+    exports: [
         UsuarioService
     ]
 })
-export class UsuarioModule{
-
+export class UsuarioModule {
 }

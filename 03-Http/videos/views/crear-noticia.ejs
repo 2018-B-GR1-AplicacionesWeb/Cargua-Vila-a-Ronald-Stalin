@@ -1,12 +1,12 @@
-<%var estaCreando= typeof noticia=== 'undefined'%>
-<% const  existeMensaje = typeof mensaje !== "undefined" %>
-<h1><%= estaCreando?'Crear':'Actualizar' %> noticia</h1>
-<p><%= estaCreando?'Crear':'Actualizar'%>una noticia</p>
-<%if (existeMensaje){%>
-    <p>MENSAJE: <%= mensaje%></p>
-<%}%>
+<% const estaCreando = typeof noticia === "undefined"%>
+
+
+<h1> <%= estaCreando ? 'Crear':'Actualizar' %> noticia</h1>
+
+<p><%= estaCreando ? 'Cree':'Actualice' %> una noticia</p>
+
 <!-- emmet -->
-<form action="/noticia/<%= estaCreando?'crear':'actualizar'%>-noticia/<%= estaCreando?'':noticia.id%>"
+<form action="/noticia/<%= estaCreando ? 'crear' : 'actualizar' %>-noticia/<%= estaCreando ? '' : noticia.id %>"
       method="POST">
 
     <div>
@@ -14,7 +14,7 @@
         <input id="titulo"
                name="titulo"
                type="text"
-               value="<%= estaCreando?'':noticia.titulo%>"
+               value="<%= estaCreando ? '' : noticia.titulo %>"
         >
     </div>
 
@@ -23,11 +23,12 @@
         <textarea id="descripcion"
                   name="descripcion"
                   cols="30" rows="4">
-            <%= estaCreando?'':noticia.descripcion%>
+            <%= estaCreando ? '' : noticia.descripcion %>
+
         </textarea>
     </div>
 
-    <button><%= estaCreando?'Crear':'Actualizar'%> noticia</button>
+    <button><%= estaCreando ? 'Crear' : 'Actualizar' %> noticia</button>
 
 </form>
 
