@@ -25,9 +25,9 @@ AppModule = __decorate([
                 type: 'mysql',
                 host: 'localhost',
                 port: 32769,
+                database: 'bddweb',
                 username: 'web',
                 password: '12345678',
-                database: 'bddweb',
                 synchronize: true,
                 dropSchema: false,
                 entities: [
@@ -37,10 +37,14 @@ AppModule = __decorate([
                     usuario_entity_1.UsuarioEntity
                 ]
             }),
-            noticia_module_1.NoticiaModule, usuario_module_1.UsuarioModule
+            noticia_module_1.NoticiaModule,
+            usuario_module_1.UsuarioModule
         ],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService
+        controllers: [
+            app_controller_1.AppController
+        ],
+        providers: [
+            app_service_1.AppService
         ],
     })
 ], AppModule);

@@ -102,18 +102,24 @@ let AppController = class AppController {
     mostrarLogin(res) {
         res.render('login');
     }
-    ejecutarLogin(username, password, res, session) {
+    ejecutarLogin(username, password, res, sesion) {
         return __awaiter(this, void 0, void 0, function* () {
-            const respuesta = yield this._usuarioService.autenticar(username, password);
-            console.log(session);
+            const respuesta = yield this._usuarioService
+                .autenticar(username, password);
+            console.log(sesion);
             if (respuesta) {
-                session.usuario = username;
+                sesion.usuario = username;
                 res.send('ok');
             }
             else {
                 res.redirect('login');
             }
         });
+    }
+    logout(res, sesion) {
+        sesion.username = undefined;
+        sesion.destroy();
+        res.redirect('login');
     }
 };
 __decorate([
@@ -195,6 +201,14 @@ __decorate([
     __metadata("design:paramtypes", [String, String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "ejecutarLogin", null);
+__decorate([
+    common_1.Get('logout'),
+    __param(0, common_1.Res()),
+    __param(1, common_1.Session()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", void 0)
+], AppController.prototype, "logout", null);
 AppController = __decorate([
     common_1.Controller(),
     __metadata("design:paramtypes", [app_service_1.AppService,

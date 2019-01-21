@@ -22,8 +22,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const usuario_entity_1 = require("./usuario.entity");
 const typeorm_2 = require("typeorm");
+const usuario_entity_1 = require("./usuario.entity");
 let UsuarioService = class UsuarioService {
     constructor(_usuarioRepository) {
         this._usuarioRepository = _usuarioRepository;

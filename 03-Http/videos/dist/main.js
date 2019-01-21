@@ -13,12 +13,13 @@ const app_module_1 = require("./app.module");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const FileSession = require("session-file-store");
+const express = require("express");
 const FileStore = FileSession(session);
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule);
         app.use(session({
-            secret: 'Na sera de tomar un traguito',
+            secret: 'No sera de tomar un traguito',
             resave: false,
             saveUninitialized: true,
             cookie: { secure: false },
@@ -27,6 +28,7 @@ function bootstrap() {
         }));
         app.use(cookieParser('me gustan los tacos', {}));
         app.set('view engine', 'ejs');
+        app.use(express.static('publico'));
         yield app.listen(3000);
     });
 }
