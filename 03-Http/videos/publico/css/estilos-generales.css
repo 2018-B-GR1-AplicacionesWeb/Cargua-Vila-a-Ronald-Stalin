@@ -8,3 +8,7 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+.scroll-tabla{
+    height: 250px;
+    overflow: auto;
+}
