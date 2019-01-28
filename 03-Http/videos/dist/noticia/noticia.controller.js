@@ -84,7 +84,9 @@ let NoticiaController = class NoticiaController {
         });
     }
     crearNoticiaRuta(response) {
-        response.render('crear-noticia');
+        response.render('crear-noticia', {
+            titulo: 'Crear noticia'
+        });
     }
     crearNoticiaFuncion(response, noticia) {
         return __awaiter(this, void 0, void 0, function* () {

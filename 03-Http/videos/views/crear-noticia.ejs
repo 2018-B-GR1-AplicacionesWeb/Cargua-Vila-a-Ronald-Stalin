@@ -1,37 +1,40 @@
-<% const estaCreando = typeof noticia === "undefined"%>
-
-
-<h1> <%= estaCreando ? 'Crear':'Actualizar' %> noticia</h1>
-
-<p><%= estaCreando ? 'Cree':'Actualice' %> una noticia</p>
-
-<!-- emmet -->
-<form action="/noticia/<%= estaCreando ? 'crear' : 'actualizar' %>-noticia/<%= estaCreando ? '' : noticia.id %>"
-      method="POST">
-
-    <div>
-        <label for="titulo">Titulo</label>
-        <input id="titulo"
-               name="titulo"
-               type="text"
-               value="<%= estaCreando ? '' : noticia.titulo %>"
-        >
-    </div>
-
-    <div>
-        <label for="descripcion">Descripcion</label>
-        <textarea id="descripcion"
-                  name="descripcion"
-                  cols="30" rows="4">
+<%- include('header',{titulo: titulo})%>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <% const estaCreando = typeof noticia === "undefined"%>
+            <h1> <%= estaCreando ? 'Crear':'Actualizar' %> noticia</h1>
+            <p><%= estaCreando ? 'Cree':'Actualice' %> una noticia</p>
+            <!-- emmet -->
+            <form action="/noticia/<%= estaCreando ? 'crear' : 'actualizar' %>-noticia/<%= estaCreando ? '' : noticia.id %>"
+                  method="POST">
+                <div>
+                    <label for="titulo">Titulo</label>
+                    <input id="titulo"
+                           name="titulo"
+                           type="text"
+                           value="<%= estaCreando ? '' : noticia.titulo %>"
+                    >
+                </div>
+                <div>
+                    <label for="descripcion">Descripcion</label>
+                    <textarea id="descripcion"
+                              name="descripcion"
+                              cols="30" rows="4">
             <%= estaCreando ? '' : noticia.descripcion %>
-
         </textarea>
+                </div>
+                <button><%= estaCreando ? 'Crear' : 'Actualizar' %> noticia</button>
+            </form>
+            <a href="/noticia/inicio">
+                <button>Regresar</button>
+            </a>
+        </div>
+        <div class="col-sm-6">
+            <%- include('templates/perfil-usuario',{imagen:'https://avatars2.githubusercontent.com/u/12177282?s=460&v=4',nombre:'Ronald Cargua', correo: 'ronald_96c@hotmail.com'})%>
+        </div>
     </div>
+</div>
 
-    <button><%= estaCreando ? 'Crear' : 'Actualizar' %> noticia</button>
-
-</form>
-
-<a href="/noticia/inicio">
-    <button>Regresar</button>
-</a>
+<%- include('librerias')%>
+<%- include('footer')%>
